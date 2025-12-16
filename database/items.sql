@@ -1,14 +1,14 @@
 CREATE TABLE items (
-itemsID INT AUTO_INCREMENT PRIMARY KEY, 
-item_name VARCHAR(150) NOT NULL, 
+itemsId INT AUTO_INCREMENT PRIMARY KEY, 
+itemName VARCHAR(150) NOT NULL, 
 category VARCHAR(100) NOT NULL, 
-purchase_price DECIMAL(12,2) NOT NULL, 
-selling_price DECIMAL(12,2) NOT NULL, 
-stock_quantity INT NOT NULL, 
-moving_status ENUM('FAST','SLOW','DEAD') NOT NULL 
+purchasePrice DECIMAL(12,2) NOT NULL, 
+sellingPrice DECIMAL(12,2) NOT NULL, 
+stockQuantity INT NOT NULL, 
+movingStatus ENUM('FAST','SLOW','DEAD') NOT NULL 
 );
 
-INSERT INTO items (item_name, category, purchase_price, selling_price, stock_quantity, moving_status) VALUES
+INSERT INTO items (itemName, category, purchasePrice, sellingPrice, stockQuantity, movingStatus) VALUES
 ('Beras Premium 5kg', 'Groceries', 60000, 72000, 120, 'FAST'),
 ('Beras Medium 5kg', 'Groceries', 52000, 62000, 80, 'SLOW'),
 ('Gula Pasir 1kg', 'Groceries', 13000, 16000, 90, 'FAST'),
