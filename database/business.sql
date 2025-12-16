@@ -1,13 +1,13 @@
 CREATE TABLE business (
-business_id INT AUTO_INCREMENT PRIMARY KEY,
-business_name VARCHAR(150) NOT NULL,
-owner_name VARCHAR(100) NOT NULL,
-business_type VARCHAR(100) NOT NULL,
+businessId INT AUTO_INCREMENT PRIMARY KEY,
+businessName VARCHAR(150) NOT NULL,
+ownerName VARCHAR(100) NOT NULL,
+businessType VARCHAR(100) NOT NULL,
 address TEXT NOT NULL,
-phone_number VARCHAR(20) NOT NULL
+phoneNumber VARCHAR(20) NOT NULL
 );
 
-INSERT INTO business (business_name, owner_name, business_type, address, phone_number) VALUES
+INSERT INTO business (businesName, ownerName, businessType, address, phoneNumber) VALUES
 ('UMKM Jaya Abadi', 'Andi Pratama', 'Retail', 'Jakarta Selatan', '08123000001'),
 ('Sumber Makmur', 'Budi Santoso', 'Wholesale', 'Bandung', '08123000002'),
 ('Maju Bersama', 'Citra Lestari', 'Food & Beverage', 'Surabaya', '08123000003'),
