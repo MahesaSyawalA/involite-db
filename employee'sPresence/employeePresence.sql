@@ -1,13 +1,13 @@
 -- Employee's Presence table 
 
 CREATE TABLE employeePresence (
-    presenceID INT PRIMARY KEY AUTO_INCREMENT,
-    userID INT NOT NULL,
+    presenceId INT PRIMARY KEY AUTO_INCREMENT,
+    userId INT NOT NULL,
     presenceDate DATE NOT NULL,
     clockIN TIME NOT NULL,
     clockOUT TIME,
 
-    UNIQUE (userID, presenceDate),
+    UNIQUE (userId, presenceDate),
     CHECK (clockOUT IS NULL OR clockOUT > clockIN)
 );
 

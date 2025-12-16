@@ -3,11 +3,11 @@
 
 UPDATE employeePresence
 SET clockOUT = '[Jam Keluar]'
-WHERE userID = [userID] AND presenceDate = '[Tanggal Absen]';
+WHERE userId = [userId] AND presenceDate = '[Tanggal Absen]';
 
 -- Data Dummynya sebagai berikut:
 
-INSERT INTO employeePresence (userID, presenceDate, clockIN, clockOUT) VALUES
+INSERT INTO employeePresence (userId, presenceDate, clockIN, clockOUT) VALUES
 (1, '2025-01-01', '08:00:00', '17:00:00'),
 (2, '2025-01-01', '08:05:00', '17:02:00'),
 (3, '2025-01-01', '07:58:00', '16:55:00'),
