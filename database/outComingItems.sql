@@ -6,8 +6,8 @@ CREATE TABLE outComingItems (
     businessId INT NOT NULL,
     userId INT NOT NULL,
 
-    quantity INT NOT NULL CHECK (quantity > 0),
-    unitPrice INT NOT NULL CHECK (unitPrice >= 0),
+    quantity INT NOT NULL,
+    unitPrice INT NOT NULL,
 
     totalSale INT GENERATED ALWAYS AS (quantity * unitPrice) STORED,
 
