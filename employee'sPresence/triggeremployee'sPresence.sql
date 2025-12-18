@@ -1,4 +1,4 @@
--- Trigger untuk absen keluar
+-- Trigger untuk validasi absen keluar
 
 DELIMITER //
 
@@ -13,3 +13,4 @@ BEGIN
 END//
 
 DELIMITER;
+
