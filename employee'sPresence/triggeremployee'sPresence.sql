@@ -1,4 +1,4 @@
--- Trigger untuk absen keluar
+-- Trigger untuk validasi  absen keluar agar clockIN tidak melebihi clockOUT
 
 DELIMITER //
 
