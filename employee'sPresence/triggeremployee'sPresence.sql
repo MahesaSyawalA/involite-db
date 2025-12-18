@@ -1,4 +1,4 @@
--- Trigger untuk validasi absen keluar
+-- Trigger untuk absen keluar
 
 DELIMITER //
 
