@@ -1,4 +1,4 @@
--- Function untuk mengecek kehadiran karyawan
+-- Function untuk mengecek kepulangan karyawan
 
 CREATE FUNCTION isEmployeePresence(p_clockIN TIME, p_clockOUT TIME)
 RETURNS VARCHAR(50)
