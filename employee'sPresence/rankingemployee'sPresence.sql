@@ -5,6 +5,7 @@ SELECT
     presenceDate,
     clockIN,
     RANK() OVER (PARTITION BY presenceDate ORDER BY clockIN ASC) AS Masuk_Paling_Awal
-    FROM employeePresence
+FROM employeePresence
+WHERE clockIN IS NOT NULL
 
 
