@@ -32,7 +32,7 @@ INSERT INTO users (businessId, firstName, lastName, email, phone, role) VALUES
 (4, 'Arif', 'Setiawan', 'arif.sales@majumandiri.com', '081234567404', 'sales');
 
 -- data dummy absen 
-INSERT INTO employeePresence (userId, presenceDate, clockIN, clockOUT) VALUES
+INSERT INTO employeePresence (userID, presenceDate, clockIN, clockOUT) VALUES
 -- BUSINESS 1 (userId 1–4)
 (1, CURDATE(), '08:00:00', '16:30:00'),
 (2, CURDATE(), '08:10:00', '16:45:00'),

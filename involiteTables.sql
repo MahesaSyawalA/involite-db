@@ -24,8 +24,8 @@ CREATE TABLE users (
 );
 
 CREATE TABLE employeePresence (
-    presenceId INT PRIMARY KEY AUTO_INCREMENT,
-    userId INT NOT NULL,
+    presenceID INT PRIMARY KEY AUTO_INCREMENT,
+    userID INT NOT NULL,
     presenceDate DATE NOT NULL,
     clockIN TIME NOT NULL,
     clockOUT TIME,
@@ -36,7 +36,7 @@ CREATE TABLE employeePresence (
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
-    UNIQUE (userId, presenceDate),
+    UNIQUE (userID, presenceDate),
     CHECK (clockOUT IS NULL OR clockOUT > clockIN)
 );
 
