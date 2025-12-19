@@ -53,3 +53,49 @@ BEGIN
 
     END IF;
 END
+
+CREATE TRIGGER RestoreStockAfterIncomingDelete
+AFTER DELETE ON inComingItems
+FOR EACH ROW
+BEGIN
+    -- Kembalikan stok ke jumlah semula (dikurangi)
+    UPDATE items 
+    SET stockQuantity = stockQuantity - OLD.quantity
+    WHERE itemsId = OLD.itemsId;
+    
+    -- Update moving status berdasarkan stok baru
+    UPDATE items
+    SET movingStatus = CASE
+        WHEN (stockQuantity - OLD.quantity) > 100 THEN 'FAST'
+        WHEN (stockQuantity - OLD.quantity) BETWEEN 20 AND 100 THEN 'SLOW'
+        ELSE 'DEAD'
+    END
+    WHERE itemsId = OLD.itemsId;
+END
+
+CREATE TRIGGER trg_after_incomingitems_delete
+AFTER DELETE ON inComingItems
+FOR EACH ROW
+BEGIN
+    DECLARE v_summaryDate DATE;
+
+    -- Ambil tanggal transaksi lama
+    SET v_summaryDate = DATE(OLD.inComingDate);
+
+    -- Update dailyProfitLoss dengan mengurangi COGS
+    IF EXISTS (
+        SELECT 1 
+        FROM dailyProfitLoss 
+        WHERE businessId = OLD.businessId 
+          AND summaryDate = v_summaryDate
+    ) THEN
+
+        UPDATE dailyProfitLoss
+        SET 
+            dailyCOGS = dailyCOGS - OLD.totalPurchase,
+            dailyGrossProfit = dailyRevenue - (dailyCOGS - OLD.totalPurchase)
+        WHERE businessId = OLD.businessId
+          AND summaryDate = v_summaryDate;
+
+    END IF;
+END
