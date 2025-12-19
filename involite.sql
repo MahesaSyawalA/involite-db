@@ -516,3 +516,4 @@ INSERT INTO outComingItems (itemsId, businessId, userId, quantity, unitPrice, ou
 (8, 2, 5, 1, 30000, '2025-01-19 11:00:00'),
 (9, 3, 1, 4, 5000,  '2025-01-20 12:00:00'),
 (10,3, 2, 2, 25000, '2025-01-20 14:00:00');
+
