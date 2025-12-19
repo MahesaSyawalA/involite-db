@@ -1,10 +1,4 @@
--- create new database
-CREATE DATABASE IF NOT EXISTS involite_db;
-USE involite_db;
-
-
--- CREATE ALL TABLE 
--- create table business
+-- Table Business
 CREATE TABLE business (
     businessId INT AUTO_INCREMENT PRIMARY KEY,
     businessName VARCHAR(150) NOT NULL,
@@ -14,80 +8,87 @@ CREATE TABLE business (
     phoneNumber VARCHAR(20) NOT NULL
 );
 
--- insert data business
-INSERT INTO business (businessName, ownerName, businessType, address, phoneNumber) VALUES
-('UMKM Jaya Abadi', 'Andi Pratama', 'Retail', 'Jakarta Selatan', '08123000001'),
-('Sumber Makmur', 'Budi Santoso', 'Wholesale', 'Bandung', '08123000002'),
-('Maju Bersama', 'Citra Lestari', 'Food & Beverage', 'Surabaya', '08123000003'),
-('Toko Sejahtera', 'Dewi Anggraini', 'Retail', 'Yogyakarta', '08123000004'),
-('CV Nusantara', 'Eko Saputra', 'Manufacture', 'Semarang', '08123000005'),
-('Warung Berkah', 'Fajar Hidayat', 'Food & Beverage', 'Solo', '08123000006'),
-('Karya Mandiri', 'Gilang Ramadhan', 'Service', 'Malang', '08123000007'),
-('Sentosa Jaya', 'Hendra Wijaya', 'Retail', 'Medan', '08123000008'),
-('Makmur Abadi', 'Intan Permata', 'Wholesale', 'Padang', '08123000009'),
-('Toko Kita', 'Joko Susilo', 'Retail', 'Bekasi', '08123000010'),
-('UMKM Sejahtera', 'Kurniawan', 'Retail', 'Depok', '08123000011'),
-('Dapoer Ibu', 'Lina Marlina', 'Food & Beverage', 'Bogor', '08123000012'),
-('Fresh Mart', 'Miko Wijaya', 'Retail', 'Tangerang', '08123000013'),
-('Berkah Jaya', 'Nanda Putra', 'Service', 'Cirebon', '08123000014'),
-('Kedai Kopi Kita', 'Oki Prasetyo', 'Food & Beverage', 'Purwokerto', '08123000015'),
-('Tani Makmur', 'Putra Adi', 'Agribusiness', 'Klaten', '08123000016'),
-('Toko Bangunan Maju', 'Rizky Ramadhan', 'Retail', 'Sukabumi', '08123000017'),
-('Sari Rasa', 'Santi Dewi', 'Food & Beverage', 'Tasikmalaya', '08123000018'),
-('Elektronik Jaya', 'Taufik Hidayat', 'Retail', 'Karawang', '08123000019'),
-('Mega Grosir', 'Umar Faruq', 'Wholesale', 'Cikarang', '08123000020'),
-('Bintang Usaha', 'Agus Salim', 'Retail', 'Jakarta Timur', '08123000021'),
-('Rasa Nusantara', 'Ayu Puspita', 'Food & Beverage', 'Jakarta Barat', '08123000022'),
-('Prima Jaya', 'Bagus Prakoso', 'Service', 'Serang', '08123000023'),
-('Grosir Murah', 'Bayu Setiawan', 'Wholesale', 'Tegal', '08123000024'),
-('Dapur Selera', 'Bella Kartika', 'Food & Beverage', 'Magelang', '08123000025'),
-('Cahaya Teknik', 'Dani Kurnia', 'Service', 'Cilacap', '08123000026'),
-('Sukses Mandiri', 'Dedi Firmansyah', 'Retail', 'Kudus', '08123000027'),
-('Lestari Tani', 'Desi Rahmawati', 'Agribusiness', 'Boyolali', '08123000028'),
-('Sinar Abadi', 'Dimas Saputra', 'Manufacture', 'Salatiga', '08123000029'),
-('Aneka Rasa', 'Dina Oktaviani', 'Food & Beverage', 'Pekalongan', '08123000030'),
-('Mitra Sejahtera', 'Eka Prabowo', 'Service', 'Brebes', '08123000031'),
-('Toko Harapan', 'Eli Susanti', 'Retail', 'Pemalang', '08123000032'),
-('Bumi Makmur', 'Fahmi Akbar', 'Agribusiness', 'Ngawi', '08123000033'),
-('Kedai Senja', 'Farah Nabila', 'Food & Beverage', 'Madiun', '08123000034'),
-('Indah Elektrik', 'Fauzan Ali', 'Retail', 'Kediri', '08123000035'),
-('Jaya Konstruksi', 'Firmansyah', 'Service', 'Blitar', '08123000036'),
-('Sari Tani', 'Fitri Handayani', 'Agribusiness', 'Tuban', '08123000037'),
-('Makmur Sentosa', 'Galih Pratama', 'Wholesale', 'Lamongan', '08123000038'),
-('Warung Kita', 'Gita Amalia', 'Food & Beverage', 'Banyuwangi', '08123000039'),
-('Sentral Grosir', 'Hafiz Rahman', 'Wholesale', 'Jember', '08123000040'),
-('Cipta Usaha', 'Hana Lestari', 'Service', 'Probolinggo', '08123000041'),
-('Toko Maju Jaya', 'Hariyanto', 'Retail', 'Pasuruan', '08123000042'),
-('Roti Bahagia', 'Intan Sari', 'Food & Beverage', 'Sidoarjo', '08123000043'),
-('Tani Sejahtera', 'Irwan Maulana', 'Agribusiness', 'Nganjuk', '08123000044'),
-('Mega Teknik', 'Jefri Kurniawan', 'Service', 'Gresik', '08123000045'),
-('Dunia Plastik', 'Kamaludin', 'Manufacture', 'Mojokerto', '08123000046'),
-('Toko Keluarga', 'Kartika Dewi', 'Retail', 'Lumajang', '08123000047'),
-('Sumber Rejeki', 'Lukman Hakim', 'Wholesale', 'Situbondo', '08123000048'),
-('Kopi Pagi', 'Maya Salsabila', 'Food & Beverage', 'Bondowoso', '08123000049'),
-('Usaha Baru', 'Muhammad Rizal', 'Service', 'Ponorogo', '08123000050'),
-('Toko Andalan', 'Niko Prasetyo', 'Retail', 'Pacitan', '08123000051'),
-('Panen Raya', 'Nurhadi', 'Agribusiness', 'Magetan', '08123000052'),
-('Selera Kampung', 'Nurlaila', 'Food & Beverage', 'Trenggalek', '08123000053'),
-('Prima Grosir', 'Omar Syah', 'Wholesale', 'Tulungagung', '08123000054'),
-('Sinar Jaya', 'Putri Azzahra', 'Retail', 'Batu', '08123000055'),
-('Tekno Service', 'Rafi Alamsyah', 'Service', 'Malang', '08123000056'),
-('Dapoer Nusantara', 'Ratna Wulandari', 'Food & Beverage', 'Surabaya', '08123000057'),
-('Sumber Tani', 'Rendi Saputra', 'Agribusiness', 'Bojonegoro', '08123000058'),
-('Mitra Teknik', 'Said Abdullah', 'Service', 'Tuban', '08123000059'),
-('Grosir Sejahtera', 'Yusuf Ramadhan', 'Wholesale', 'Lamongan', '08123000060'),
-('UMKM Muda', 'Zaki Firmansyah', 'Retail', 'Gresik', '08123000061'),
-('Kedai Rindu', 'Zahra Putri', 'Food & Beverage', 'Sidoarjo', '08123000062'),
-('Cahaya Usaha', 'Arman Hidayat', 'Service', 'Jakarta Pusat', '08123000063'),
-('Toko Nusantara', 'Sri Wahyuni', 'Retail', 'Jakarta Utara', '08123000064'),
-('Sari Laut Kita', 'Wawan Setiawan', 'Food & Beverage', 'Jakarta Selatan', '08123000065'),
-('Agro Mandiri', 'Bambang Sudrajat', 'Agribusiness', 'Indramayu', '08123000066'),
-('Berkah Teknik', 'Ilham Prakoso', 'Service', 'Subang', '08123000067'),
-('Mega Retail', 'Siti Aminah', 'Retail', 'Purwakarta', '08123000068'),
-('Rasa Bahari', 'Teguh Santoso', 'Food & Beverage', 'Pati', '08123000069'),
-('Sukses Bersama', 'Yuni Kartika', 'Wholesale', 'Jepara', '08123000070');
+DELIMITER $$
 
--- create table users
+CREATE TRIGGER trg_business_after_insert
+AFTER INSERT ON business
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'CREATE',
+        'business',
+        NEW.businessId,
+        JSON_OBJECT(
+            'businessName', NEW.businessName,
+            'ownerName', NEW.ownerName,
+            'businessType', NEW.businessType,
+            'address', NEW.address,
+            'phoneNumber', NEW.phoneNumber
+        )
+    );
+END$$
+
+
+CREATE TRIGGER trg_business_after_update
+AFTER UPDATE ON business
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'UPDATE',
+        'business',
+        NEW.businessId,
+        JSON_OBJECT(
+            'businessName', JSON_OBJECT('old', OLD.businessName, 'new', NEW.businessName),
+            'ownerName', JSON_OBJECT('old', OLD.ownerName, 'new', NEW.ownerName),
+            'businessType', JSON_OBJECT('old', OLD.businessType, 'new', NEW.businessType),
+            'address', JSON_OBJECT('old', OLD.address, 'new', NEW.address),
+            'phoneNumber', JSON_OBJECT('old', OLD.phoneNumber, 'new', NEW.phoneNumber)
+        )
+    );
+END$$
+
+
+CREATE TRIGGER trg_business_before_delete
+BEFORE DELETE ON business
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        OLD.businessId,
+        'DELETE',
+        'business',
+        OLD.businessId,
+        JSON_OBJECT(
+            'businessName', OLD.businessName,
+            'ownerName', OLD.ownerName,
+            'businessType', OLD.businessType,
+            'address', OLD.address,
+            'phoneNumber', OLD.phoneNumber
+        )
+    );
+END$$
+
+DELIMITER ;
+
 CREATE TABLE users (
     userId INT AUTO_INCREMENT PRIMARY KEY,
     businessId INT NOT NULL,
@@ -101,130 +102,89 @@ CREATE TABLE users (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
--- insert data dummy users
-INSERT INTO users (businessId, firstName, lastName, email, phone, role) VALUES
--- BUSINESS 1
-(1, 'Andi', 'Saputra', 'andi1@usaha.com', '081200000001', 'owner'),
-(1, 'Rina', 'Kurniawati', 'rina1@usaha.com', '081200000002', 'akuntan'),
-(1, 'Budi', 'Santoso', 'budi1@usaha.com', '081200000003', 'gudang'),
-(1, 'Siti', 'Aisyah', 'siti1@usaha.com', '081200000004', 'sales'),
-(1, 'Deni', 'Pratama', 'deni1@usaha.com', '081200000005', 'sales'),
-(1, 'Lina', 'Maharani', 'lina1@usaha.com', '081200000006', 'gudang'),
-(1, 'Rudi', 'Hartono', 'rudi1@usaha.com', '081200000007', 'sales'),
-(1, 'Maya', 'Putri', 'maya1@usaha.com', '081200000008', 'sales'),
+DELIMITER $$
 
--- BUSINESS 2
-(2, 'Ahmad', 'Fauzi', 'ahmad2@usaha.com', '081200000009', 'owner'),
-(2, 'Dewi', 'Anggraini', 'dewi2@usaha.com', '081200000010', 'akuntan'),
-(2, 'Rizky', 'Ramadhan', 'rizky2@usaha.com', '081200000011', 'sales'),
-(2, 'Nina', 'Permata', 'nina2@usaha.com', '081200000012', 'sales'),
-(2, 'Fajar', 'Hidayat', 'fajar2@usaha.com', '081200000013', 'gudang'),
-(2, 'Putri', 'Lestari', 'putri2@usaha.com', '081200000014', 'gudang'),
-(2, 'Agus', 'Salim', 'agus2@usaha.com', '081200000015', 'sales'),
-(2, 'Wulan', 'Sari', 'wulan2@usaha.com', '081200000016', 'sales'),
+CREATE TRIGGER trg_users_after_insert
+AFTER INSERT ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'CREATE',
+        'users',
+        NEW.userId,
+        JSON_OBJECT(
+            'firstName', NEW.firstName,
+            'lastName', NEW.lastName,
+            'email', NEW.email,
+            'phone', NEW.phone,
+            'role', NEW.role
+        )
+    );
+END $$
 
--- BUSINESS 3
-(3, 'Bayu', 'Wicaksono', 'bayu3@usaha.com', '081200000017', 'owner'),
-(3, 'Intan', 'Sari', 'intan3@usaha.com', '081200000018', 'akuntan'),
-(3, 'Yoga', 'Prakoso', 'yoga3@usaha.com', '081200000019', 'gudang'),
-(3, 'Novi', 'Amelia', 'novi3@usaha.com', '081200000020', 'sales'),
-(3, 'Arif', 'Maulana', 'arif3@usaha.com', '081200000021', 'sales'),
-(3, 'Tika', 'Rahmawati', 'tika3@usaha.com', '081200000022', 'gudang'),
-(3, 'Hendra', 'Gunawan', 'hendra3@usaha.com', '081200000023', 'sales'),
-(3, 'Yuni', 'Lestari', 'yuni3@usaha.com', '081200000024', 'sales'),
+CREATE TRIGGER trg_users_after_update
+AFTER UPDATE ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'UPDATE',
+        'users',
+        NEW.userId,
+        JSON_OBJECT(
+            'firstName', JSON_OBJECT('old', OLD.firstName, 'new', NEW.firstName),
+            'lastName',  JSON_OBJECT('old', OLD.lastName,  'new', NEW.lastName),
+            'email',     JSON_OBJECT('old', OLD.email,     'new', NEW.email),
+            'phone',     JSON_OBJECT('old', OLD.phone,     'new', NEW.phone),
+            'role',      JSON_OBJECT('old', OLD.role,      'new', NEW.role)
+        )
+    );
+END $$
 
--- BUSINESS 4
-(4, 'Rangga', 'Wijaya', 'rangga4@usaha.com', '081200000025', 'owner'),
-(4, 'Salsa', 'Nabila', 'salsa4@usaha.com', '081200000026', 'akuntan'),
-(4, 'Ilham', 'Sapriadi', 'ilham4@usaha.com', '081200000027', 'gudang'),
-(4, 'Farah', 'Anindya', 'farah4@usaha.com', '081200000028', 'sales'),
-(4, 'Iqbal', 'Ramli', 'iqbal4@usaha.com', '081200000029', 'sales'),
-(4, 'Dina', 'Oktaviani', 'dina4@usaha.com', '081200000030', 'gudang'),
-(4, 'Bagus', 'Setiawan', 'bagus4@usaha.com', '081200000031', 'sales'),
-(4, 'Citra', 'Ayuningtyas', 'citra4@usaha.com', '081200000032', 'sales'),
+CREATE TRIGGER trg_users_before_delete
+BEFORE DELETE ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        OLD.businessId,
+        'DELETE',
+        'users',
+        OLD.userId,
+        JSON_OBJECT(
+            'firstName', OLD.firstName,
+            'lastName', OLD.lastName,
+            'email', OLD.email,
+            'phone', OLD.phone,
+            'role', OLD.role
+        )
+    );
+END $$
 
--- BUSINESS 5
-(5, 'Surya', 'Aditya', 'surya5@usaha.com', '081200000033', 'owner'),
-(5, 'Melati', 'Puspitasari', 'melati5@usaha.com', '081200000034', 'akuntan'),
-(5, 'Kevin', 'Pranata', 'kevin5@usaha.com', '081200000035', 'sales'),
-(5, 'Aulia', 'Rahman', 'aulia5@usaha.com', '081200000036', 'sales'),
-(5, 'Rama', 'Kusuma', 'rama5@usaha.com', '081200000037', 'gudang'),
-(5, 'Nadya', 'Safitri', 'nadya5@usaha.com', '081200000038', 'gudang'),
-(5, 'Fikri', 'Alamsyah', 'fikri5@usaha.com', '081200000039', 'sales'),
-(5, 'Sarah', 'Halim', 'sarah5@usaha.com', '081200000040', 'sales');
+DELIMITER ;
 
--- create table employee presence
-CREATE TABLE employeePresence (
-    presenceId INT PRIMARY KEY AUTO_INCREMENT,
-    userId INT NOT NULL,
-    presenceDate DATE NOT NULL,
-    clockIN TIME NOT NULL,
-    clockOUT TIME,
-
-    CONSTRAINT fk_employeePresence_user
-        FOREIGN KEY (userId)
-        REFERENCES users(userId)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT,
-
-    UNIQUE (userId, presenceDate),
-    CHECK (clockOUT IS NULL OR clockOUT > clockIN)
-);
-
--- insert data dummy employee presence
-INSERT INTO employeePresence (userId, presenceDate, clockIN, clockOUT) VALUES
-(1, '2025-01-01', '08:00:00', '17:00:00'),
-(2, '2025-01-01', '08:05:00', '17:02:00'),
-(3, '2025-01-01', '07:58:00', '16:55:00'),
-(4, '2025-01-01', '08:10:00', '17:15:00'),
-(5, '2025-01-01', '08:02:00', '17:00:00'),
-
-(6, '2025-01-02', '08:00:00', '17:00:00'),
-(7, '2025-01-02', '08:07:00', '17:10:00'),
-(8, '2025-01-02', '07:55:00', '16:50:00'),
-(9, '2025-01-02', '08:12:00', '17:20:00'),
-(10,'2025-01-02', '08:01:00', '17:00:00'),
-
-(1, '2025-01-03', '08:03:00', '17:05:00'),
-(2, '2025-01-03', '08:00:00', '17:00:00'),
-(3, '2025-01-03', '08:06:00', '17:10:00'),
-(4, '2025-01-03', '08:15:00', '17:25:00'),
-(5, '2025-01-03', '07:59:00', '16:58:00'),
-
-(6, '2025-01-04', '08:02:00', '17:00:00'),
-(7, '2025-01-04', '08:00:00', '17:00:00'),
-(8, '2025-01-04', '08:05:00', '17:10:00'),
-(9, '2025-01-04', '08:08:00', '17:12:00'),
-(10,'2025-01-04', '07:57:00', '16:55:00'),
-
-(1, '2025-01-05', '08:00:00', '17:00:00'),
-(2, '2025-01-05', '08:04:00', '17:05:00'),
-(3, '2025-01-05', '08:10:00', '17:15:00'),
-(4, '2025-01-05', '08:20:00', '17:30:00'),
-(5, '2025-01-05', '07:56:00', '16:50:00'),
-
-(6, '2025-01-06', '08:01:00', '17:00:00'),
-(7, '2025-01-06', '08:03:00', '17:05:00'),
-(8, '2025-01-06', '08:00:00', '17:00:00'),
-(9, '2025-01-06', '08:09:00', '17:18:00'),
-(10,'2025-01-06', '08:02:00', '17:05:00'),
-
-(1, '2025-01-07', '08:00:00', NULL),
-(2, '2025-01-07', '08:05:00', NULL),
-(3, '2025-01-07', '07:59:00', NULL),
-(4, '2025-01-07', '08:12:00', NULL),
-(5, '2025-01-07', '08:03:00', NULL),
-
-(6, '2025-01-07', '08:00:00', NULL),
-(7, '2025-01-07', '08:06:00', NULL),
-(8, '2025-01-07', '08:02:00', NULL),
-(9, '2025-01-07', '08:10:00', NULL),
-(10,'2025-01-07', '07:58:00', NULL);
-
--- create table inventaries
+-- Inventaries
 CREATE TABLE inventaries (
     invId INT AUTO_INCREMENT PRIMARY KEY,
     businessId INT NOT NULL,
@@ -238,55 +198,173 @@ CREATE TABLE inventaries (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
--- insert data dummy inventaries
-INSERT INTO inventaries (businessId, name, description, price, purchaseDate, status) VALUES
-(1, 'Etalase Kaca', 'Etalase untuk display produk', 2500000, '2023-01-10', 'active'),
-(1, 'Meja Kasir', 'Meja kasir kayu', 1200000, '2023-01-12', 'active'),
-(1, 'Kursi Kasir', 'Kursi kasir plastik', 250000, '2023-01-12', 'active'),
-(1, 'Rak Besi', 'Rak besi penyimpanan barang', 1800000, '2023-01-15', 'active'),
-(1, 'Timbangan Digital', 'Timbangan digital 30kg', 650000, '2023-01-18', 'active'),
-(1, 'Printer Struk', 'Printer thermal struk', 900000, '2023-01-20', 'active'),
-(1, 'Mesin Kasir', 'Mesin kasir elektronik', 3500000, '2023-01-22', 'active'),
-(1, 'Lemari Penyimpanan', 'Lemari kayu penyimpanan', 2200000, '2023-01-25', 'active'),
-(1, 'Kipas Angin', 'Kipas angin berdiri', 450000, '2023-01-27', 'active'),
-(1, 'Lampu LED', 'Lampu LED toko', 150000, '2023-01-28', 'active'),
+DELIMITER $$
 
-(1, 'AC Toko', 'AC 1 PK', 4200000, '2023-02-01', 'active'),
-(1, 'CCTV Indoor', 'Kamera CCTV dalam ruangan', 800000, '2023-02-03', 'active'),
-(1, 'CCTV Outdoor', 'Kamera CCTV luar ruangan', 950000, '2023-02-03', 'active'),
-(1, 'Router WiFi', 'Router internet toko', 650000, '2023-02-05', 'active'),
-(1, 'Komputer Kasir', 'PC kasir utama', 5500000, '2023-02-07', 'active'),
-(1, 'Monitor Kasir', 'Monitor LED 22 inch', 1800000, '2023-02-07', 'active'),
-(1, 'Keyboard Kasir', 'Keyboard USB', 150000, '2023-02-07', 'active'),
-(1, 'Mouse Kasir', 'Mouse USB', 120000, '2023-02-07', 'active'),
-(1, 'UPS', 'UPS untuk komputer kasir', 900000, '2023-02-10', 'active'),
-(1, 'Brankas', 'Brankas penyimpanan uang', 3000000, '2023-02-12', 'active'),
+CREATE TRIGGER trg_inventaries_after_insert
+AFTER INSERT ON inventaries
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'CREATE',
+        'inventaries',
+        NEW.invId,
+        JSON_OBJECT(
+            'name', NEW.name,
+            'description', NEW.description,
+            'price', NEW.price,
+            'purchaseDate', NEW.purchaseDate,
+            'status', NEW.status
+        )
+    );
+END $$
 
-(1, 'Rak Display Minuman', 'Rak pendingin minuman', 6500000, '2023-02-15', 'active'),
-(1, 'Freezer', 'Freezer penyimpanan es', 7200000, '2023-02-18', 'active'),
-(1, 'Meja Kerja', 'Meja kerja staff', 950000, '2023-02-20', 'active'),
-(1, 'Kursi Staff', 'Kursi kerja staff', 550000, '2023-02-20', 'active'),
-(1, 'Dispenser Air', 'Dispenser air minum', 450000, '2023-02-22', 'active'),
-(1, 'Microwave', 'Microwave untuk kebutuhan staff', 1200000, '2023-02-25', 'active'),
-(1, 'Rak Arsip', 'Rak arsip dokumen', 850000, '2023-02-27', 'inactive'),
-(1, 'Telepon Kantor', 'Telepon kabel kantor', 300000, '2023-03-01', 'inactive'),
-(1, 'Speaker Toko', 'Speaker audio toko', 750000, '2023-03-03', 'active'),
-(1, 'Jam Dinding', 'Jam dinding toko', 120000, '2023-03-05', 'active'),
+CREATE TRIGGER trg_inventaries_after_update
+AFTER UPDATE ON inventaries
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'UPDATE',
+        'inventaries',
+        NEW.invId,
+        JSON_OBJECT(
+            'name', JSON_OBJECT('old', OLD.name, 'new', NEW.name),
+            'description', JSON_OBJECT('old', OLD.description, 'new', NEW.description),
+            'price', JSON_OBJECT('old', OLD.price, 'new', NEW.price),
+            'purchaseDate', JSON_OBJECT('old', OLD.purchaseDate, 'new', NEW.purchaseDate),
+            'status', JSON_OBJECT('old', OLD.status, 'new', NEW.status)
+        )
+    );
+END $$
 
-(1, 'Papan Nama', 'Papan nama toko', 1800000, '2023-03-07', 'active'),
-(1, 'Mesin EDC', 'Mesin pembayaran kartu', 0, '2023-03-08', 'active'),
-(1, 'Rak Gudang', 'Rak gudang belakang', 2600000, '2023-03-10', 'active'),
-(1, 'Troli Barang', 'Troli angkut barang', 850000, '2023-03-12', 'active'),
-(1, 'Tangga Lipat', 'Tangga lipat aluminium', 650000, '2023-03-15', 'active'),
-(1, 'Vacuum Cleaner', 'Alat pembersih toko', 950000, '2023-03-18', 'inactive'),
-(1, 'Kotak P3K', 'Perlengkapan P3K', 250000, '2023-03-20', 'active'),
-(1, 'APAR', 'Alat pemadam api ringan', 600000, '2023-03-22', 'active'),
-(1, 'Banner Promosi', 'Banner promosi toko', 350000, '2023-03-25', 'inactive');
+CREATE TRIGGER trg_inventaries_before_delete
+BEFORE DELETE ON inventaries
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        OLD.businessId,
+        'DELETE',
+        'inventaries',
+        OLD.invId,
+        JSON_OBJECT(
+            'name', OLD.name,
+            'description', OLD.description,
+            'price', OLD.price,
+            'purchaseDate', OLD.purchaseDate,
+            'status', OLD.status
+        )
+    );
+END $$
 
--- create table items
+CREATE FUNCTION fn_total_inventary_value(p_businessId INT)
+RETURNS BIGINT
+DETERMINISTIC
+BEGIN
+    DECLARE total BIGINT;
+
+    SELECT COALESCE(SUM(price), 0)
+    INTO total
+    FROM inventaries
+    WHERE businessId = p_businessId
+      AND status = 'active';
+
+    RETURN total;
+END $$
+
+CREATE PROCEDURE sp_add_inventary(
+    IN p_businessId INT,
+    IN p_name VARCHAR(150),
+    IN p_description VARCHAR(200),
+    IN p_price INT,
+    IN p_purchaseDate DATE
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO inventaries (
+        businessId,
+        name,
+        description,
+        price,
+        purchaseDate,
+        status
+    ) VALUES (
+        p_businessId,
+        p_name,
+        p_description,
+        p_price,
+        p_purchaseDate,
+        'active'
+    );
+
+    COMMIT;
+END $$
+
+CREATE TRIGGER trg_check_inventary_price
+BEFORE INSERT ON inventaries
+FOR EACH ROW
+BEGIN
+    IF NEW.price <= 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Harga inventaris harus lebih dari 0';
+    END IF;
+END $$
+
+DELIMITER ;
+
+CREATE VIEW vw_inventary_ranking AS
+SELECT
+    invId,
+    businessId,
+    name,
+    price,
+    RANK() OVER (
+        PARTITION BY businessId
+        ORDER BY price DESC
+    ) AS price_rank
+FROM inventaries
+WHERE status = 'active';
+
+-- VIEW DASHBOARD INVENTARIES
+CREATE VIEW vw_dashboard_inventaries AS
+SELECT
+    invId,
+    businessId,
+    name,
+    description,
+    price,
+    purchaseDate,
+    status
+FROM inventaries
+WHERE status = 'active';
+
 CREATE TABLE items (
     itemsId INT AUTO_INCREMENT PRIMARY KEY,
     businessId INT NOT NULL, 
@@ -301,63 +379,91 @@ CREATE TABLE items (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT 
+        ON DELETE CASCADE 
 );
 
--- insert data dummy items
-INSERT INTO items 
-(businessId, itemName, category, purchasePrice, sellingPrice, stockQuantity, movingStatus) 
-VALUES
--- BUSINESS 1
-(1, 'Beras Premium 5kg', 'Sembako', 65000.00, 72000.00, 50, 'FAST'),
-(1, 'Minyak Goreng 1L', 'Sembako', 14500.00, 16000.00, 120, 'FAST'),
-(1, 'Gula Pasir 1kg', 'Sembako', 13500.00, 15000.00, 80, 'FAST'),
-(1, 'Tepung Terigu 1kg', 'Sembako', 9500.00, 11000.00, 60, 'SLOW'),
-(1, 'Kopi Bubuk 200gr', 'Minuman', 18000.00, 22000.00, 40, 'SLOW'),
-(1, 'Teh Celup', 'Minuman', 9000.00, 12000.00, 70, 'SLOW'),
-(1, 'Susu UHT 1L', 'Minuman', 16000.00, 18500.00, 90, 'FAST'),
-(1, 'Mi Instan', 'Makanan', 2800.00, 3500.00, 300, 'FAST'),
-(1, 'Biskuit Coklat', 'Snack', 7000.00, 9000.00, 55, 'SLOW'),
-(1, 'Air Mineral 600ml', 'Minuman', 3000.00, 4000.00, 200, 'FAST'),
+DELIMITER $$
 
--- BUSINESS 2
-(2, 'Pulpen Gel', 'ATK', 2500.00, 4000.00, 150, 'FAST'),
-(2, 'Buku Tulis', 'ATK', 4500.00, 6500.00, 120, 'FAST'),
-(2, 'Pensil 2B', 'ATK', 1500.00, 3000.00, 200, 'FAST'),
-(2, 'Penghapus', 'ATK', 800.00, 2000.00, 180, 'SLOW'),
-(2, 'Spidol Whiteboard', 'ATK', 7000.00, 9500.00, 60, 'SLOW'),
-(2, 'Kertas A4', 'ATK', 38000.00, 45000.00, 40, 'FAST'),
-(2, 'Map Plastik', 'ATK', 2000.00, 3500.00, 90, 'SLOW'),
-(2, 'Stabilo', 'ATK', 5000.00, 7500.00, 75, 'SLOW'),
-(2, 'Amplop Coklat', 'ATK', 1200.00, 2500.00, 110, 'SLOW'),
-(2, 'Penggaris 30cm', 'ATK', 3000.00, 5000.00, 85, 'DEAD'),
+CREATE TRIGGER trg_items_after_insert
+AFTER INSERT ON items
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'CREATE',
+        'items',
+        NEW.itemsId,
+        JSON_OBJECT(
+            'itemName', NEW.itemName,
+            'category', NEW.category,
+            'purchasePrice', NEW.purchasePrice,
+            'sellingPrice', NEW.sellingPrice,
+            'stockQuantity', NEW.stockQuantity,
+            'movingStatus', NEW.movingStatus
+        )
+    );
+END$$
 
--- BUSINESS 3
-(3, 'Kaos Polos', 'Fashion', 45000.00, 75000.00, 70, 'FAST'),
-(3, 'Kemeja Pria', 'Fashion', 95000.00, 145000.00, 40, 'FAST'),
-(3, 'Celana Jeans', 'Fashion', 125000.00, 195000.00, 30, 'SLOW'),
-(3, 'Jaket Hoodie', 'Fashion', 110000.00, 175000.00, 25, 'SLOW'),
-(3, 'Topi Baseball', 'Fashion', 35000.00, 55000.00, 60, 'SLOW'),
-(3, 'Sandal Jepit', 'Fashion', 18000.00, 30000.00, 90, 'FAST'),
-(3, 'Sepatu Sneakers', 'Fashion', 250000.00, 350000.00, 20, 'FAST'),
-(3, 'Ikat Pinggang', 'Fashion', 40000.00, 65000.00, 35, 'DEAD'),
-(3, 'Dompet Pria', 'Fashion', 60000.00, 95000.00, 28, 'SLOW'),
-(3, 'Kaos Kaki', 'Fashion', 8000.00, 15000.00, 100, 'FAST'),
+CREATE TRIGGER trg_items_after_update
+AFTER UPDATE ON items
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'UPDATE',
+        'items',
+        NEW.itemsId,
+        JSON_OBJECT(
+            'itemName', JSON_OBJECT('old', OLD.itemName, 'new', NEW.itemName),
+            'category', JSON_OBJECT('old', OLD.category, 'new', NEW.category),
+            'purchasePrice', JSON_OBJECT('old', OLD.purchasePrice, 'new', NEW.purchasePrice),
+            'sellingPrice', JSON_OBJECT('old', OLD.sellingPrice, 'new', NEW.sellingPrice),
+            'stockQuantity', JSON_OBJECT('old', OLD.stockQuantity, 'new', NEW.stockQuantity),
+            'movingStatus', JSON_OBJECT('old', OLD.movingStatus, 'new', NEW.movingStatus)
+        )
+    );
+END$$
 
--- BUSINESS 4
-(4, 'Sabun Cair', 'Kebersihan', 9000.00, 12000.00, 85, 'FAST'),
-(4, 'Shampoo 170ml', 'Kebersihan', 12000.00, 16000.00, 70, 'FAST'),
-(4, 'Pasta Gigi', 'Kebersihan', 9500.00, 13000.00, 65, 'SLOW'),
-(4, 'Deterjen Bubuk', 'Kebersihan', 18000.00, 23000.00, 50, 'FAST'),
-(4, 'Pewangi Pakaian', 'Kebersihan', 15000.00, 20000.00, 40, 'SLOW'),
-(4, 'Tisu Gulung', 'Kebersihan', 8500.00, 12000.00, 75, 'FAST'),
-(4, 'Pembersih Lantai', 'Kebersihan', 13000.00, 17000.00, 45, 'SLOW'),
-(4, 'Sabun Cuci Piring', 'Kebersihan', 11000.00, 15000.00, 60, 'FAST'),
-(4, 'Masker Medis', 'Kesehatan', 1500.00, 3000.00, 200, 'DEAD'),
-(4, 'Hand Sanitizer', 'Kesehatan', 9000.00, 15000.00, 55, 'SLOW');
+CREATE TRIGGER trg_items_before_delete
+BEFORE DELETE ON items
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        OLD.businessId,
+        'DELETE',
+        'items',
+        OLD.itemsId,
+        JSON_OBJECT(
+            'itemName', OLD.itemName,
+            'category', OLD.category,
+            'purchasePrice', OLD.purchasePrice,
+            'sellingPrice', OLD.sellingPrice,
+            'stockQuantity', OLD.stockQuantity,
+            'movingStatus', OLD.movingStatus
+        )
+    );
+END$$
 
+DELIMITER ;
 
--- create table incoming (restock / purchase)
 CREATE TABLE inComingItems (
     iciId INT AUTO_INCREMENT PRIMARY KEY,
 
@@ -377,68 +483,349 @@ CREATE TABLE inComingItems (
         FOREIGN KEY (itemsId)
         REFERENCES items(itemsId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_ici_business
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_ici_user
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
+-- Hapus trigger yang redundan
+DROP TRIGGER IF EXISTS UpdateStockAfterIncoming;
+DROP TRIGGER IF EXISTS trg_after_incomingitems_insert;
+DROP TRIGGER IF EXISTS RestoreStockAfterIncomingDelete;
+DROP TRIGGER IF EXISTS trg_after_incomingitems_delete;
 
--- insert data inComingItems 
-INSERT INTO inComingItems (itemsId, businessId, userId, quantity, unitPrice, inComingDate) VALUES
-(1, 1, 1, 10, 8000,  '2024-12-25 09:00:00'),
-(2, 1, 2, 15, 12000, '2024-12-25 10:00:00'),
-(3, 1, 3, 20, 5000,  '2024-12-26 11:00:00'),
-(4, 2, 1, 12, 9000,  '2024-12-26 13:00:00'),
-(5, 2, 2, 18, 6000,  '2024-12-27 14:00:00'),
-(6, 2, 3, 8,  15000, '2024-12-27 15:00:00'),
-(7, 3, 4, 25, 5500,  '2024-12-28 09:30:00'),
-(8, 3, 5, 5,  22000, '2024-12-28 10:30:00'),
-(9, 1, 1, 30, 4000,  '2024-12-29 11:00:00'),
-(10,1, 2, 10, 20000, '2024-12-29 13:00:00'),
+DELIMITER $$
 
-(1, 2, 3, 14, 8000,  '2024-12-30 09:00:00'),
-(2, 2, 4, 18, 12000, '2024-12-30 10:30:00'),
-(3, 3, 5, 22, 5000,  '2024-12-31 11:00:00'),
-(4, 3, 1, 16, 9000,  '2024-12-31 13:00:00'),
-(5, 1, 2, 20, 6000,  '2025-01-01 09:00:00'),
-(6, 1, 3, 12, 15000, '2025-01-01 10:30:00'),
-(7, 2, 4, 28, 5500,  '2025-01-02 11:00:00'),
-(8, 2, 5, 6,  22000, '2025-01-02 13:00:00'),
-(9, 3, 1, 35, 4000,  '2025-01-03 14:00:00'),
-(10,3, 2, 14, 20000, '2025-01-03 15:00:00'),
+-- Trigger UPDATE untuk logs
+CREATE TRIGGER trg_inComingItems_after_update
+AFTER UPDATE ON inComingItems
+FOR EACH ROW
+BEGIN
+    DECLARE v_quantity_diff INT;
+    DECLARE v_totalPurchase_diff DECIMAL(15,2);
+    DECLARE v_old_purchase_price DECIMAL(15,2);
+    DECLARE v_new_purchase_price DECIMAL(15,2);
+    DECLARE v_current_stock INT;
+    
+    -- Log update
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'UPDATE',
+        'inComingItems',
+        NEW.iciId,
+        JSON_OBJECT(
+            'itemsId', JSON_OBJECT('old', OLD.itemsId, 'new', NEW.itemsId),
+            'userId', JSON_OBJECT('old', OLD.userId, 'new', NEW.userId),
+            'quantity', JSON_OBJECT('old', OLD.quantity, 'new', NEW.quantity),
+            'unitPrice', JSON_OBJECT('old', OLD.unitPrice, 'new', NEW.unitPrice),
+            'totalPurchase', JSON_OBJECT('old', OLD.totalPurchase, 'new', NEW.totalPurchase),
+            'inComingDate', JSON_OBJECT('old', OLD.inComingDate, 'new', NEW.inComingDate)
+        )
+    );
+    
+    -- Update stok dan COGS jika ada perubahan quantity atau unitPrice
+    IF OLD.quantity != NEW.quantity OR OLD.unitPrice != NEW.unitPrice THEN
+        SET v_quantity_diff = NEW.quantity - OLD.quantity;
+        SET v_totalPurchase_diff = NEW.totalPurchase - OLD.totalPurchase;
+        
+        -- Update stok
+        UPDATE items 
+        SET stockQuantity = stockQuantity + v_quantity_diff
+        WHERE itemsId = NEW.itemsId;
+        
+        -- Update dailyProfitLoss (COGS)
+        IF v_totalPurchase_diff != 0 THEN
+            UPDATE dailyProfitLoss
+            SET 
+                dailyCOGS = dailyCOGS + v_totalPurchase_diff,
+                dailyGrossProfit = dailyRevenue - dailyCOGS
+            WHERE businessId = NEW.businessId 
+              AND summaryDate = DATE(NEW.inComingDate);
+        END IF;
+    END IF;
+END$$
 
-(1, 1, 3, 18, 8000,  '2025-01-01 09:00:00'),
-(2, 1, 4, 22, 12000, '2025-01-01 10:00:00'),
-(3, 1, 5, 26, 5000,  '2025-01-01 11:00:00'),
-(4, 2, 1, 14, 9000,  '2025-01-05 13:00:00'),
-(5, 2, 2, 24, 6000,  '2025-01-06 09:00:00'),
-(6, 2, 3, 10, 15000, '2025-01-06 10:30:00'),
-(7, 3, 4, 32, 5500,  '2025-01-07 11:00:00'),
-(8, 3, 5, 8,  22000, '2025-01-07 13:00:00'),
-(9, 1, 1, 40, 4000,  '2025-01-08 14:00:00'),
-(10,1, 2, 16, 20000, '2025-01-08 15:00:00'),
+-- Trigger DELETE untuk logs dan update stok
+CREATE TRIGGER trg_inComingItems_before_delete
+BEFORE DELETE ON inComingItems
+FOR EACH ROW
+BEGIN
+    DECLARE v_current_purchase_price DECIMAL(15,2);
+    DECLARE v_current_stock INT;
+    DECLARE v_new_avg_price DECIMAL(15,2);
+    
+    -- Log penghapusan
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        OLD.businessId,
+        'DELETE',
+        'inComingItems',
+        OLD.iciId,
+        JSON_OBJECT(
+            'itemsId', OLD.itemsId,
+            'userId', OLD.userId,
+            'quantity', OLD.quantity,
+            'unitPrice', OLD.unitPrice,
+            'totalPurchase', OLD.totalPurchase,
+            'inComingDate', OLD.inComingDate
+        )
+    );
+    
+    -- Ambil data current untuk kalkulasi rata-rata
+    SELECT purchasePrice, stockQuantity 
+    INTO v_current_purchase_price, v_current_stock
+    FROM items 
+    WHERE itemsId = OLD.itemsId;
+    
+    -- Hitung harga rata-rata baru setelah penghapusan (reverse weighted average)
+    IF v_current_stock - OLD.quantity > 0 THEN
+        SET v_new_avg_price = ((v_current_purchase_price * v_current_stock) - (OLD.unitPrice * OLD.quantity)) 
+                               / (v_current_stock - OLD.quantity);
+    ELSE
+        SET v_new_avg_price = 0;
+    END IF;
+    
+    -- Update stok dan harga beli
+    UPDATE items 
+    SET 
+        stockQuantity = stockQuantity - OLD.quantity,
+        purchasePrice = ROUND(GREATEST(v_new_avg_price, 0), 2)
+    WHERE itemsId = OLD.itemsId;
+    
+    -- Update moving status
+    UPDATE items
+    SET movingStatus = CASE
+        WHEN (stockQuantity - OLD.quantity) > 100 THEN 'FAST'
+        WHEN (stockQuantity - OLD.quantity) BETWEEN 20 AND 100 THEN 'SLOW'
+        ELSE 'DEAD'
+    END
+    WHERE itemsId = OLD.itemsId;
+    
+    -- Update dailyProfitLoss (kurangi COGS)
+    UPDATE dailyProfitLoss
+    SET 
+        dailyCOGS = dailyCOGS - OLD.totalPurchase,
+        dailyGrossProfit = dailyRevenue - dailyCOGS
+    WHERE businessId = OLD.businessId 
+      AND summaryDate = DATE(OLD.inComingDate);
+END$$
 
-(1, 2, 3, 12, 8000,  '2025-01-09 09:00:00'),
-(2, 2, 4, 18, 12000, '2025-01-09 10:00:00'),
-(3, 3, 5, 20, 5000,  '2025-01-10 11:00:00'),
-(4, 3, 1, 15, 9000,  '2025-01-10 13:00:00'),
-(5, 1, 2, 22, 6000,  '2025-01-11 09:00:00'),
-(6, 1, 3, 11, 15000, '2025-01-11 10:30:00'),
-(7, 2, 4, 30, 5500,  '2025-01-12 11:00:00'),
-(8, 2, 5, 7,  22000, '2025-01-12 13:00:00'),
-(9, 3, 1, 36, 4000,  '2025-01-13 14:00:00'),
-(10,3, 2, 15, 20000, '2025-01-13 15:00:00');
+-- Trigger INSERT untuk logs
+CREATE TRIGGER trg_inComingItems_after_insert
+AFTER INSERT ON inComingItems
+FOR EACH ROW
+BEGIN
+    -- Log insert
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'INSERT',
+        'inComingItems',
+        NEW.iciId,
+        JSON_OBJECT(
+            'itemsId', NEW.itemsId,
+            'userId', NEW.userId,
+            'quantity', NEW.quantity,
+            'unitPrice', NEW.unitPrice,
+            'totalPurchase', NEW.totalPurchase,
+            'inComingDate', NEW.inComingDate
+        )
+    );
+    
+    -- Update dailyProfitLoss (tambah COGS)
+    INSERT INTO dailyProfitLoss (
+        businessId,
+        summaryDate,
+        dailyRevenue,
+        dailyCOGS,
+        dailyGrossProfit
+    ) VALUES (
+        NEW.businessId,
+        DATE(NEW.inComingDate),
+        0,
+        NEW.totalPurchase,
+        -NEW.totalPurchase
+    )
+    ON DUPLICATE KEY UPDATE
+        dailyCOGS = dailyCOGS + NEW.totalPurchase,
+        dailyGrossProfit = dailyRevenue - dailyCOGS;
+END$$
 
--- create table outComingItems atau penjualan
+-- Procedure untuk mendapatkan ranking stok
+CREATE PROCEDURE GetStockRanking(
+    IN p_businessId INT
+)
+BEGIN
+    SELECT 
+        RANK() OVER (ORDER BY stockQuantity DESC) AS peringkat,
+        itemName AS nama_barang,
+        category AS kategori,
+        stockQuantity AS jumlah_stok,
+        movingStatus AS status_pergerakan,
+        FormatRupiah(purchasePrice) AS harga_beli,
+        FormatRupiah(sellingPrice) AS harga_jual,
+        FormatRupiah(stockQuantity * sellingPrice) AS nilai_stok_total
+    FROM items
+    WHERE businessId = p_businessId
+    ORDER BY stockQuantity DESC;
+END $$
+
+-- Procedure utama untuk insert barang masuk
+CREATE PROCEDURE InsertIncomingItem(
+    IN p_itemsId INT,
+    IN p_businessId INT,
+    IN p_userId INT,
+    IN p_quantity INT,
+    IN p_unitPrice DECIMAL(15,2)
+)
+BEGIN
+    DECLARE v_current_price DECIMAL(15,2);
+    DECLARE v_new_avg_price DECIMAL(15,2);
+    DECLARE v_current_stock INT;
+    DECLARE v_total_purchase DECIMAL(15,2);
+    DECLARE v_new_ici_id INT;
+    DECLARE v_moving_status VARCHAR(10);
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    START TRANSACTION;
+    
+    -- Lock row dan ambil data current
+    SELECT purchasePrice, stockQuantity 
+    INTO v_current_price, v_current_stock
+    FROM items 
+    WHERE itemsId = p_itemsId 
+      AND businessId = p_businessId
+    FOR UPDATE;
+    
+    IF v_current_price IS NULL THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Item tidak ditemukan';
+    END IF;
+    
+    -- Validasi input
+    IF p_quantity <= 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Quantity harus lebih dari 0';
+    END IF;
+    
+    IF p_unitPrice < 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Harga unit tidak boleh negatif';
+    END IF;
+    
+    -- Hitung total purchase
+    SET v_total_purchase = p_quantity * p_unitPrice;
+    
+    -- Hitung harga rata-rata baru (weighted average)
+    IF v_current_stock + p_quantity > 0 THEN
+        SET v_new_avg_price = ((v_current_price * v_current_stock) + (p_unitPrice * p_quantity)) 
+                               / (v_current_stock + p_quantity);
+    ELSE
+        SET v_new_avg_price = p_unitPrice;
+    END IF;
+    
+    -- Tentukan moving status baru
+    SET v_moving_status = CASE
+        WHEN (v_current_stock + p_quantity) > 100 THEN 'FAST'
+        WHEN (v_current_stock + p_quantity) BETWEEN 20 AND 100 THEN 'SLOW'
+        ELSE 'DEAD'
+    END;
+    
+    -- Insert ke inComingItems
+    INSERT INTO inComingItems (
+        itemsId,
+        businessId,
+        userId,
+        quantity,
+        unitPrice,
+        totalPurchase,
+        inComingDate
+    ) VALUES (
+        p_itemsId,
+        p_businessId,
+        p_userId,
+        p_quantity,
+        p_unitPrice,
+        v_total_purchase,
+        NOW()
+    );
+    
+    SET v_new_ici_id = LAST_INSERT_ID();
+    
+    -- Update items: stok, harga beli rata-rata, dan moving status
+    UPDATE items 
+    SET 
+        stockQuantity = stockQuantity + p_quantity,
+        purchasePrice = ROUND(v_new_avg_price, 2),
+        movingStatus = v_moving_status
+    WHERE itemsId = p_itemsId;
+    
+    -- Update dailyProfitLoss dalam satu transaksi
+    INSERT INTO dailyProfitLoss (
+        businessId,
+        summaryDate,
+        dailyRevenue,
+        dailyCOGS,
+        dailyGrossProfit
+    ) VALUES (
+        p_businessId,
+        CURDATE(),
+        0,
+        v_total_purchase,
+        -v_total_purchase
+    )
+    ON DUPLICATE KEY UPDATE
+        dailyCOGS = dailyCOGS + v_total_purchase,
+        dailyGrossProfit = dailyRevenue - dailyCOGS;
+    
+    COMMIT;
+    
+    -- Return hasil
+    SELECT 
+        'SUCCESS' AS status,
+        'Barang masuk berhasil' AS message,
+        v_new_ici_id AS incoming_id,
+        v_current_stock AS stock_before,
+        (v_current_stock + p_quantity) AS stock_after,
+        FORMAT(v_current_price, 2) AS old_price,
+        FORMAT(v_new_avg_price, 2) AS new_avg_price,
+        FORMAT(p_unitPrice, 2) AS input_price,
+        v_moving_status AS moving_status,
+        FormatRupiah(v_total_purchase) AS total_purchase;
+END$$
+
+DELIMITER ;
+
 CREATE TABLE outComingItems (
     ociId INT AUTO_INCREMENT PRIMARY KEY,
 
@@ -458,130 +845,298 @@ CREATE TABLE outComingItems (
         FOREIGN KEY (itemsId)
         REFERENCES items(itemsId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_oci_business
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_oci_user
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
--- insert data dummy outComingItems
-INSERT INTO outComingItems (itemsId, businessId, userId, quantity, unitPrice, outComingDate) VALUES
-(1, 1, 1, 2, 10000, '2025-01-01 10:00:00'),
-(2, 1, 2, 1, 15000, '2025-01-01 11:00:00'),
-(3, 1, 3, 5, 7000,  '2025-01-02 09:30:00'),
-(4, 2, 1, 3, 12000, '2025-01-02 13:00:00'),
-(5, 2, 2, 4, 9000,  '2025-01-03 14:00:00'),
-(6, 2, 3, 2, 20000, '2025-01-03 15:30:00'),
-(7, 3, 4, 6, 8000,  '2025-01-04 10:45:00'),
-(8, 3, 5, 1, 30000, '2025-01-04 11:15:00'),
-(9, 1, 1, 7, 5000,  '2025-01-05 09:00:00'),
-(10,1, 2, 2, 25000, '2025-01-05 16:00:00'),
+-- Hapus trigger yang redundan
+DROP TRIGGER IF EXISTS UpdateStockAfterOutgoing;
+DROP TRIGGER IF EXISTS trg_after_outcomingitems_insert;
+DROP TRIGGER IF EXISTS RestoreStockAfterOutgoingDelete;
+DROP TRIGGER IF EXISTS trg_after_outcomingitems_delete;
 
-(1, 2, 3, 4, 10000, '2025-01-06 10:00:00'),
-(2, 2, 4, 3, 15000, '2025-01-06 11:30:00'),
-(3, 3, 5, 6, 7000,  '2025-01-07 12:00:00'),
-(4, 3, 1, 1, 12000, '2025-01-07 14:00:00'),
-(5, 1, 2, 5, 9000,  '2025-01-08 15:00:00'),
-(6, 1, 3, 2, 20000, '2025-01-08 16:00:00'),
-(7, 2, 4, 3, 8000,  '2025-01-09 09:00:00'),
-(8, 2, 5, 1, 30000, '2025-01-09 10:00:00'),
-(9, 3, 1, 8, 5000,  '2025-01-10 11:00:00'),
-(10,3, 2, 2, 25000, '2025-01-10 13:00:00'),
+DELIMITER $$
 
-(1, 1, 3, 6, 10000, '2025-01-11 10:00:00'),
-(2, 1, 4, 4, 15000, '2025-01-11 11:30:00'),
-(3, 1, 5, 3, 7000,  '2025-01-12 09:30:00'),
-(4, 2, 1, 2, 12000, '2025-01-12 14:00:00'),
-(5, 2, 2, 7, 9000,  '2025-01-13 15:00:00'),
-(6, 2, 3, 1, 20000, '2025-01-13 16:00:00'),
-(7, 3, 4, 5, 8000,  '2025-01-14 10:00:00'),
-(8, 3, 5, 2, 30000, '2025-01-14 11:00:00'),
-(9, 1, 1, 9, 5000,  '2025-01-15 12:00:00'),
-(10,1, 2, 3, 25000, '2025-01-15 14:00:00'),
+-- Trigger UPDATE untuk logs
+CREATE TRIGGER trg_outComingItems_after_update
+AFTER UPDATE ON outComingItems
+FOR EACH ROW
+BEGIN
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'UPDATE',
+        'outComingItems',
+        NEW.ociId,
+        JSON_OBJECT(
+            'itemsId', JSON_OBJECT('old', OLD.itemsId, 'new', NEW.itemsId),
+            'userId', JSON_OBJECT('old', OLD.userId, 'new', NEW.userId),
+            'quantity', JSON_OBJECT('old', OLD.quantity, 'new', NEW.quantity),
+            'unitPrice', JSON_OBJECT('old', OLD.unitPrice, 'new', NEW.unitPrice),
+            'totalSale', JSON_OBJECT('old', OLD.totalSale, 'new', NEW.totalSale),
+            'outComingDate', JSON_OBJECT('old', OLD.outComingDate, 'new', NEW.outComingDate)
+        )
+    );
+END $$
 
-(1, 2, 3, 2, 10000, '2025-01-16 10:00:00'),
-(2, 2, 4, 5, 15000, '2025-01-16 11:00:00'),
-(3, 3, 5, 4, 7000,  '2025-01-17 09:30:00'),
-(4, 3, 1, 6, 12000, '2025-01-17 13:00:00'),
-(5, 1, 2, 3, 9000,  '2025-01-18 15:00:00'),
-(6, 1, 3, 2, 20000, '2025-01-18 16:00:00'),
-(7, 2, 4, 7, 8000,  '2025-01-19 10:00:00'),
-(8, 2, 5, 1, 30000, '2025-01-19 11:00:00'),
-(9, 3, 1, 4, 5000,  '2025-01-20 12:00:00'),
-(10,3, 2, 2, 25000, '2025-01-20 14:00:00');
+-- Trigger DELETE untuk logs
+CREATE TRIGGER trg_outComingItems_before_delete
+BEFORE DELETE ON outComingItems
+FOR EACH ROW
+BEGIN
+    -- Log penghapusan
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        OLD.businessId,
+        'DELETE',
+        'outComingItems',
+        OLD.ociId,
+        JSON_OBJECT(
+            'itemsId', OLD.itemsId,
+            'userId', OLD.userId,
+            'quantity', OLD.quantity,
+            'unitPrice', OLD.unitPrice,
+            'totalSale', OLD.totalSale,
+            'outComingDate', OLD.outComingDate
+        )
+    );
+    
+    -- Kembalikan stok
+    UPDATE items 
+    SET stockQuantity = stockQuantity + OLD.quantity
+    WHERE itemsId = OLD.itemsId;
+    
+    -- Update dailyProfitLoss
+    UPDATE dailyProfitLoss
+    SET 
+        dailyRevenue = dailyRevenue - OLD.totalSale,
+        dailyGrossProfit = dailyRevenue - dailyCOGS
+    WHERE businessId = OLD.businessId 
+      AND summaryDate = DATE(OLD.outComingDate);
+END $$
 
--- create table Reports
-CREATE TABLE Reports(
-    reportID INT PRIMARY KEY AUTO_INCREMENT,
-    reportType VARCHAR(20) NOT NULL,
-    user VARCHAR(50) NOT NULL,
-    reportDescription TEXT NOT NULL
-);
+-- Trigger INSERT untuk logs
+CREATE TRIGGER trg_outComingItems_after_insert
+AFTER INSERT ON outComingItems
+FOR EACH ROW
+BEGIN
+    -- Log insert
+    INSERT INTO logs (
+        businessId,
+        action,
+        entity,
+        entityId,
+        changes
+    ) VALUES (
+        NEW.businessId,
+        'INSERT',
+        'outComingItems',
+        NEW.ociId,
+        JSON_OBJECT(
+            'itemsId', NEW.itemsId,
+            'userId', NEW.userId,
+            'quantity', NEW.quantity,
+            'unitPrice', NEW.unitPrice,
+            'totalSale', NEW.totalSale,
+            'outComingDate', NEW.outComingDate
+        )
+    );
+    
+    -- Update dailyProfitLoss dengan cara yang benar
+    INSERT INTO dailyProfitLoss (
+        businessId,
+        summaryDate,
+        dailyRevenue,
+        dailyCOGS,
+        dailyGrossProfit
+    ) VALUES (
+        NEW.businessId,
+        DATE(NEW.outComingDate),
+        NEW.totalSale,
+        0,
+        NEW.totalSale
+    )
+    ON DUPLICATE KEY UPDATE
+        dailyRevenue = dailyRevenue + NEW.totalSale,
+        dailyGrossProfit = dailyRevenue + NEW.totalSale - dailyCOGS;
+END $$
 
--- insert data dummy Reports
-INSERT INTO Reports (reportType, user, reportDescription) VALUES
-('Fraud', 'Andi Kuliner', 'Penipuan pembayaran pesanan katering'),
-('Harassment', 'Budi Coffee', 'Pelanggan mengirim pesan kasar kepada kasir'),
-('Other', 'Citra Fashion', 'Keluhan layanan pengiriman terlambat'),
-('Violence', 'Dewi Laundry', 'Ancaman fisik terhadap pegawai toko'),
-('Corruption', 'Eko Supplier', 'Pemotongan dana kerja sama tidak resmi'),
+-- Procedure untuk mendapatkan barang terlaris
+CREATE PROCEDURE GetBestSellingItems(
+    IN p_businessId INT
+)
+BEGIN
+    SELECT 
+        RANK() OVER (ORDER BY SUM(oci.quantity) DESC) AS ranking,
+        i.itemName AS nama_barang,
+        i.category AS kategori,
+        SUM(oci.quantity) AS total_terjual,
+        COUNT(oci.ociId) AS jumlah_transaksi,
+        FORMAT(AVG(oci.unitPrice), 0) AS harga_rata_rata,
+        FormatRupiah(SUM(oci.totalSale)) AS total_penjualan
+    FROM outComingItems oci
+    JOIN items i ON oci.itemsId = i.itemsId
+    WHERE oci.businessId = p_businessId
+    GROUP BY i.itemsId, i.itemName, i.category
+    ORDER BY total_terjual DESC;
+END $$
 
-('Fraud', 'Fajar Elektronik', 'Pembayaran palsu menggunakan bukti transfer editan'),
-('Hate Speech', 'Gita Bakery', 'Komentar menghina usaha lokal di media sosial'),
-('Harassment', 'Hadi Workshop', 'Pelanggan melakukan pelecehan verbal'),
-('Other', 'Intan Florist', 'Perselisihan kecil antar mitra usaha'),
-('Violence', 'Joko Mart', 'Perusakan etalase toko'),
+-- Procedure utama untuk insert barang keluar (MENGGANTI trigger lama)
+CREATE PROCEDURE InsertOutComingItem(
+    IN p_itemsId INT,
+    IN p_businessId INT,
+    IN p_userId INT,
+    IN p_quantity INT,
+    IN p_unitPrice DECIMAL(15,2)
+)
+BEGIN
+    DECLARE v_currentStock INT;
+    DECLARE v_purchasePrice DECIMAL(15,2);
+    DECLARE v_totalSale DECIMAL(15,2);
+    DECLARE v_newOciId INT;
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
 
-('Corruption', 'Kartika Event', 'Permintaan pungutan liar dalam perizinan'),
-('Fraud', 'Lukman Printing', 'Penipuan invoice oleh pihak ketiga'),
-('Harassment', 'Maya Salon', 'Pelanggan mengganggu karyawan'),
-('Hate Speech', 'Nanda Media', 'Ujaran kebencian terhadap pemilik UMKM'),
-('Other', 'Oki Frozen Food', 'Kesalahpahaman kontrak kerja'),
+    START TRANSACTION;
 
-('Violence', 'Putri Petshop', 'Ancaman terhadap pegawai saat penagihan'),
-('Fraud', 'Qori Skincare', 'Penjualan produk palsu mengatasnamakan toko'),
-('Corruption', 'Rama Logistik', 'Suap untuk percepatan distribusi'),
-('Harassment', 'Sinta Craft', 'Pelecehan melalui pesan online'),
-('Other', 'Taufik Furniture', 'Komplain kualitas bahan'),
+    -- Lock dan cek stok
+    SELECT stockQuantity, purchasePrice
+    INTO v_currentStock, v_purchasePrice
+    FROM items
+    WHERE itemsId = p_itemsId
+      AND businessId = p_businessId
+    FOR UPDATE;
 
-('Hate Speech', 'Umar Travel', 'Komentar diskriminatif terhadap jasa lokal'),
-('Violence', 'Vina Catering', 'Keributan fisik dengan pelanggan'),
-('Fraud', 'Wahyu Digital', 'Penipuan layanan pemasaran online'),
-('Corruption', 'Yoga Distributor', 'Penggelapan dana titipan'),
-('Harassment', 'Zahra Boutique', 'Pelanggan berkata tidak sopan'),
+    IF v_currentStock IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Item tidak ditemukan';
+    END IF;
 
-('Other', 'Andi Percetakan', 'Laporan umum terkait kerja sama'),
-('Fraud', 'Bella Aksesoris', 'Pembatalan sepihak setelah pembayaran'),
-('Violence', 'Chandra Bengkel', 'Perusakan fasilitas bengkel'),
-('Hate Speech', 'Dian Studio', 'Komentar merendahkan UMKM kecil'),
+    IF v_currentStock < p_quantity THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Stok tidak mencukupi';
+    END IF;
 
-('Harassment', 'Erik Fotografi', 'Pesan tidak pantas kepada admin'),
-('Fraud', 'Fitri Snack', 'Pembelian fiktif dalam jumlah besar'),
-('Corruption', 'Galih Property', 'Pungutan ilegal dalam sewa kios'),
-('Other', 'Hana Hijab', 'Kesalahan pencatatan stok'),
+    -- Hitung total sale
+    SET v_totalSale = p_quantity * p_unitPrice;
 
-('Violence', 'Irfan Seafood', 'Ancaman kekerasan saat penagihan'),
-('Harassment', 'Jihan Wedding', 'Gangguan verbal kepada staf'),
-('Fraud', 'Kevin Fashion', 'Penipuan reseller'),
-('Corruption', 'Lia Logistics', 'Penyalahgunaan dana operasional'),
-('Other', 'Miko Furniture', 'Keluhan kualitas pengiriman'),
+    -- Insert ke outComingItems
+    INSERT INTO outComingItems (
+        itemsId,
+        businessId,
+        userId,
+        quantity,
+        unitPrice,
+        totalSale,
+        outComingDate
+    ) VALUES (
+        p_itemsId,
+        p_businessId,
+        p_userId,
+        p_quantity,
+        p_unitPrice,
+        v_totalSale,
+        NOW()
+    );
+    
+    SET v_newOciId = LAST_INSERT_ID();
 
-('Hate Speech', 'Nisa Online Shop', 'Komentar ofensif di marketplace'),
-('Violence', 'Oscar Mini Market', 'Perkelahian di area toko'),
-('Harassment', 'Putra Tech Store', 'Pelanggan berkata kasar'),
-('Fraud', 'Rani Cosmetic', 'Penjualan produk tiruan'),
-('Other', 'Satria UMKM Center', 'Laporan umum terkait manajemen');
+    -- Update stok
+    UPDATE items 
+    SET stockQuantity = stockQuantity - p_quantity
+    WHERE itemsId = p_itemsId;
 
-CREATE TABLE dailyProfitoss (
+    -- Update dailyProfitLoss dalam satu transaksi
+    INSERT INTO dailyProfitLoss (
+        businessId,
+        summaryDate,
+        dailyRevenue,
+        dailyCOGS,
+        dailyGrossProfit
+    ) VALUES (
+        p_businessId,
+        CURDATE(),
+        v_totalSale,
+        0,
+        v_totalSale
+    )
+    ON DUPLICATE KEY UPDATE
+        dailyRevenue = dailyRevenue + v_totalSale,
+        dailyGrossProfit = dailyRevenue + v_totalSale - dailyCOGS;
+
+    COMMIT;
+
+    -- Return hasil
+    SELECT
+        'SUCCESS' AS status,
+        'Barang keluar berhasil' AS message,
+        v_newOciId AS outComing_id,
+        v_currentStock AS stock_before,
+        (v_currentStock - p_quantity) AS stock_after,
+        FormatRupiah(v_purchasePrice) AS purchase_price,
+        FormatRupiah(p_unitPrice) AS sale_price,
+        FormatRupiah(v_totalSale) AS total_sale;
+
+END$$
+
+-- Trigger untuk UPDATE (jika data outComingItems diupdate)
+CREATE TRIGGER trg_outComingItems_after_update_complete
+AFTER UPDATE ON outComingItems
+FOR EACH ROW
+BEGIN
+    DECLARE v_quantity_diff INT;
+    DECLARE v_totalSale_diff DECIMAL(15,2);
+    
+    -- Jika ada perubahan quantity atau unitPrice
+    IF OLD.quantity != NEW.quantity OR OLD.unitPrice != NEW.unitPrice THEN
+        SET v_quantity_diff = NEW.quantity - OLD.quantity;
+        SET v_totalSale_diff = NEW.totalSale - OLD.totalSale;
+        
+        -- Update stok berdasarkan selisih quantity
+        UPDATE items 
+        SET stockQuantity = stockQuantity - v_quantity_diff
+        WHERE itemsId = NEW.itemsId;
+        
+        -- Update dailyProfitLoss
+        IF v_totalSale_diff != 0 THEN
+            UPDATE dailyProfitLoss
+            SET 
+                dailyRevenue = dailyRevenue + v_totalSale_diff,
+                dailyGrossProfit = dailyRevenue - dailyCOGS
+            WHERE businessId = NEW.businessId 
+              AND summaryDate = DATE(NEW.outComingDate);
+        END IF;
+    END IF;
+END $$
+
+DELIMITER ;
+
+CREATE TABLE dailyProfitLoss (
     dailyId INT AUTO_INCREMENT PRIMARY KEY,
     businessId INT NOT NULL,
     summaryDate DATE NOT NULL,
@@ -591,3 +1146,80 @@ CREATE TABLE dailyProfitoss (
     UNIQUE KEY (businessId, summaryDate),
     FOREIGN KEY (businessId) REFERENCES business(businessId)
 );
+
+DELIMITER $$
+CREATE PROCEDURE GetTopRevenueMonths(
+    IN p_businessId INT,
+    IN p_year INT
+)
+BEGIN
+    SELECT 
+        RANK() OVER (ORDER BY SUM(dailyRevenue) DESC) AS ranking,
+        MONTH(summaryDate) AS bulan_angka,
+        DATE_FORMAT(summaryDate, '%M') AS nama_bulan,
+        COUNT(*) AS hari_aktif,
+        FormatRupiah(SUM(dailyRevenue)) AS total_pendapatan,
+        FormatRupiah(SUM(dailyGrossProfit)) AS total_laba_kotor,
+        CONCAT(FORMAT(AVG(dailyGrossProfit / NULLIF(dailyRevenue, 0)) * 100, 1), '%') AS margin_rata_rata
+    FROM dailyProfitLoss
+    WHERE businessId = p_businessId
+      AND YEAR(summaryDate) = p_year
+    GROUP BY MONTH(summaryDate), DATE_FORMAT(summaryDate, '%M')
+    ORDER BY SUM(dailyRevenue) DESC;
+END $$
+
+CREATE PROCEDURE GetMonthlyRecap(
+    IN p_businessId INT,
+    IN p_month INT,   
+    IN p_year INT       
+)
+BEGIN
+    DECLARE v_month_name VARCHAR(20);
+    DECLARE v_total_days INT;
+    DECLARE v_operational_days INT;
+    
+    -- Get month name
+    SET v_month_name = DATE_FORMAT(CONCAT(p_year, '-', p_month, '-01'), '%M');
+    
+    -- Calculate total days in month
+    SET v_total_days = DAY(LAST_DAY(CONCAT(p_year, '-', p_month, '-01')));
+    
+    SELECT 
+        -- Informasi Periode
+        CONCAT(v_month_name, ' ', p_year) AS periode,
+        p_month AS bulan_angka,
+        v_month_name AS nama_bulan,
+        p_year AS tahun,
+        v_total_days AS total_hari_dalam_bulan,
+        
+        -- Statistik Hari
+        COUNT(*) AS hari_operasional,
+        CONCAT(FORMAT((COUNT(*) / v_total_days) * 100, 1), '%') AS persentase_operasional,
+        
+        -- Ringkasan Keuangan
+        FormatRupiah(SUM(dailyRevenue)) AS total_pendapatan,
+        FormatRupiah(SUM(dailyCOGS)) AS total_hpp,
+        FormatRupiah(SUM(dailyGrossProfit)) AS total_laba_kotor,
+        
+        -- Rata-rata Harian
+        FormatRupiah(AVG(dailyRevenue)) AS rata_rata_pendapatan_harian,
+        FormatRupiah(AVG(dailyGrossProfit)) AS rata_rata_laba_harian,
+        
+        -- Nilai Tertinggi & Terendah
+        FormatRupiah(MAX(dailyRevenue)) AS pendapatan_tertinggi,
+        FormatRupiah(MIN(dailyRevenue)) AS pendapatan_terendah,
+        FormatRupiah(MAX(dailyGrossProfit)) AS laba_tertinggi,
+        FormatRupiah(MIN(dailyGrossProfit)) AS laba_terendah,
+        
+        -- Persentase
+        CONCAT(FORMAT((SUM(dailyGrossProfit) / NULLIF(SUM(dailyRevenue), 0)) * 100, 1), '%') AS margin_bulanan,
+        
+        -- Perbandingan HPP vs Revenue
+        CONCAT(FORMAT((SUM(dailyCOGS) / NULLIF(SUM(dailyRevenue), 0)) * 100, 1), '%') AS persentase_hpp
+        
+    FROM dailyProfitLoss
+    WHERE businessId = p_businessId
+      AND YEAR(summaryDate) = p_year
+      AND MONTH(summaryDate) = p_month;
+    
+END $$
