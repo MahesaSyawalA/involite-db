@@ -1,3 +1,23 @@
+DELIMITER $$
+CREATE FUNCTION FormatRupiah(
+    amount DECIMAL(15,2)
+)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE formatted VARCHAR(50);
+    
+    IF amount IS NULL THEN
+        RETURN 'Rp 0';
+    END IF;
+    
+    SET formatted = CONCAT('Rp ', FORMAT(amount, 0));
+    
+    RETURN formatted;
+END$$
+
+DELIMITER ;
+
 -- Table Business
 CREATE TABLE business (
     businessId INT AUTO_INCREMENT PRIMARY KEY,
@@ -1224,7 +1244,9 @@ BEGIN
     
 END $$
 
-CREATE TABLE logs (
+DELIMITER ; 
+
+CREATE TABLE logs(
     logId INT AUTO_INCREMENT PRIMARY KEY,
 
     businessId INT NOT NULL,
