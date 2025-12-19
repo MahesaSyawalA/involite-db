@@ -1,0 +1,55 @@
+CREATE PROCEDURE GetMonthlyRecap(
+    IN p_businessId INT,
+    IN p_month INT,   
+    IN p_year INT       
+)
+BEGIN
+    DECLARE v_month_name VARCHAR(20);
+    DECLARE v_total_days INT;
+    DECLARE v_operational_days INT;
+    
+    -- Get month name
+    SET v_month_name = DATE_FORMAT(CONCAT(p_year, '-', p_month, '-01'), '%M');
+    
+    -- Calculate total days in month
+    SET v_total_days = DAY(LAST_DAY(CONCAT(p_year, '-', p_month, '-01')));
+    
+    SELECT 
+        -- Informasi Periode
+        CONCAT(v_month_name, ' ', p_year) AS periode,
+        p_month AS bulan_angka,
+        v_month_name AS nama_bulan,
+        p_year AS tahun,
+        v_total_days AS total_hari_dalam_bulan,
+        
+        -- Statistik Hari
+        COUNT(*) AS hari_operasional,
+        CONCAT(FORMAT((COUNT(*) / v_total_days) * 100, 1), '%') AS persentase_operasional,
+        
+        -- Ringkasan Keuangan
+        FormatRupiah(SUM(dailyRevenue)) AS total_pendapatan,
+        FormatRupiah(SUM(dailyCOGS)) AS total_hpp,
+        FormatRupiah(SUM(dailyGrossProfit)) AS total_laba_kotor,
+        
+        -- Rata-rata Harian
+        FormatRupiah(AVG(dailyRevenue)) AS rata_rata_pendapatan_harian,
+        FormatRupiah(AVG(dailyGrossProfit)) AS rata_rata_laba_harian,
+        
+        -- Nilai Tertinggi & Terendah
+        FormatRupiah(MAX(dailyRevenue)) AS pendapatan_tertinggi,
+        FormatRupiah(MIN(dailyRevenue)) AS pendapatan_terendah,
+        FormatRupiah(MAX(dailyGrossProfit)) AS laba_tertinggi,
+        FormatRupiah(MIN(dailyGrossProfit)) AS laba_terendah,
+        
+        -- Persentase
+        CONCAT(FORMAT((SUM(dailyGrossProfit) / NULLIF(SUM(dailyRevenue), 0)) * 100, 1), '%') AS margin_bulanan,
+        
+        -- Perbandingan HPP vs Revenue
+        CONCAT(FORMAT((SUM(dailyCOGS) / NULLIF(SUM(dailyRevenue), 0)) * 100, 1), '%') AS persentase_hpp
+        
+    FROM dailyProfitLoss
+    WHERE businessId = p_businessId
+      AND YEAR(summaryDate) = p_year
+      AND MONTH(summaryDate) = p_month;
+    
+END

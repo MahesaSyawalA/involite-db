@@ -1,15 +1,4 @@
--- Employee's Presence table 
-
-CREATE TABLE employeePresence (
-    presenceId INT PRIMARY KEY AUTO_INCREMENT,
-    userId INT NOT NULL,
-    presenceDate DATE NOT NULL,
-    clockIN TIME NOT NULL,
-    clockOUT TIME,
-
-    UNIQUE (userId, presenceDate),
-    CHECK (clockOUT IS NULL OR clockOUT > clockIN)
-);
+-- Trigger untuk validasi  absen keluar agar clockIN tidak melebihi clockOUT
 
 DELIMITER //
 
@@ -24,3 +13,4 @@ BEGIN
 END//
 
 DELIMITER;
+

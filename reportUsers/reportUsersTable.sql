@@ -1,3 +1,12 @@
+CREATE TABLE Reports(
+    reportID INT PRIMARY KEY AUTO_INCREMENT,
+    reportType VARCHAR(20) NOT NULL,
+    user VARCHAR(50) NOT NULL,
+    reportDescription TEXT NOT NULL
+);
+
+
+
 INSERT INTO Reports (reportType, user, reportDescription) VALUES
 ('Fraud', 'Andi Kuliner', 'Penipuan pembayaran pesanan katering'),
 ('Harassment', 'Budi Coffee', 'Pelanggan mengirim pesan kasar kepada kasir'),
