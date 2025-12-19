@@ -13,3 +13,15 @@ BEGIN
 END//  
 
 DELIMITER;
+
+-- Validasi tanggal pembuatan createdAt tidak boleh melebihi tanggal default 
+
+CREATE TRIGGER trg_reports_validate_date
+BEFORE INSERT ON Reports
+FOR EACH ROW
+BEGIN
+    IF NEW.createdAt > CURRENT_DATE THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Tanggal laporan tidak boleh melebihi hari ini';
+    END IF;
+END;
