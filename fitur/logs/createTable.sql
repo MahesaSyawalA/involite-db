@@ -15,4 +15,4 @@ CREATE TABLE logs (
         REFERENCES business(businessId)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);
