@@ -11,6 +11,24 @@ CREATE TABLE employeePresence (
     CHECK (clockOUT IS NULL OR clockOUT > clockIN)
 );
 
+-- ini yang sama relasi 
+-- CREATE TABLE employeePresence (
+--     presenceId INT PRIMARY KEY AUTO_INCREMENT,
+--     userId INT NOT NULL,
+--     presenceDate DATE NOT NULL,
+--     clockIN TIME NOT NULL,
+--     clockOUT TIME,
+
+--     CONSTRAINT fk_employeePresence_user
+--         FOREIGN KEY (userId)
+--         REFERENCES users(userId)
+--         ON UPDATE CASCADE
+--         ON DELETE RESTRICT,
+
+--     UNIQUE (userId, presenceDate),
+--     CHECK (clockOUT IS NULL OR clockOUT > clockIN)
+-- );
+
 INSERT INTO employeePresence (userID, presenceDate, clockIN, clockOUT) VALUES
 (1, '2025-01-01', '08:00:00', '17:00:00'),
 (2, '2025-01-01', '08:05:00', '17:02:00'),
