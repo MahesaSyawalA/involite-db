@@ -5,8 +5,7 @@ CREATE TABLE Reports(
     reportDescription TEXT NOT NULL
 );
 
-SELECT @sql_mode;
-SET sql_mode = 'STRICT_TRANS_TABLES';
+
 
 INSERT INTO Reports (reportType, user, reportDescription) VALUES
 ('Fraud', 'Andi Kuliner', 'Penipuan pembayaran pesanan katering'),
