@@ -1,13 +1,17 @@
--- Panduan absen 
--- Jika ingin mengabsen clockOUT contoh query berikut:
+-- Employee's Presence table 
 
-UPDATE employeePresence
-SET clockOUT = '[Jam Keluar]'
-WHERE userId = [userId] AND presenceDate = '[Tanggal Absen]';
+CREATE TABLE employeePresence (
+    presenceID INT PRIMARY KEY AUTO_INCREMENT,
+    userID INT NOT NULL,
+    presenceDate DATE NOT NULL,
+    clockIN TIME NOT NULL,
+    clockOUT TIME,
 
--- Data Dummynya sebagai berikut:
+    UNIQUE (userID, presenceDate),
+    CHECK (clockOUT IS NULL OR clockOUT > clockIN)
+);
 
-INSERT INTO employeePresence (userId, presenceDate, clockIN, clockOUT) VALUES
+INSERT INTO employeePresence (userID, presenceDate, clockIN, clockOUT) VALUES
 (1, '2025-01-01', '08:00:00', '17:00:00'),
 (2, '2025-01-01', '08:05:00', '17:02:00'),
 (3, '2025-01-01', '07:58:00', '16:55:00'),
@@ -55,4 +59,3 @@ INSERT INTO employeePresence (userId, presenceDate, clockIN, clockOUT) VALUES
 (8, '2025-01-07', '08:02:00', NULL),
 (9, '2025-01-07', '08:10:00', NULL),
 (10,'2025-01-07', '07:58:00', NULL);
-
