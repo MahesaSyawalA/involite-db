@@ -20,7 +20,7 @@ CREATE TABLE users (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 CREATE TABLE employeePresence (
@@ -34,7 +34,7 @@ CREATE TABLE employeePresence (
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     UNIQUE (userId, presenceDate),
     CHECK (clockOUT IS NULL OR clockOUT > clockIN)
@@ -53,7 +53,7 @@ CREATE TABLE inventaries (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 CREATE TABLE items (
@@ -70,7 +70,7 @@ CREATE TABLE items (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT 
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE inComingItems (
@@ -92,19 +92,19 @@ CREATE TABLE inComingItems (
         FOREIGN KEY (itemsId)
         REFERENCES items(itemsId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_ici_business
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_ici_user
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 CREATE TABLE outComingItems (
@@ -126,19 +126,19 @@ CREATE TABLE outComingItems (
         FOREIGN KEY (itemsId)
         REFERENCES items(itemsId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_oci_business
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_oci_user
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 CREATE TABLE dailyProfitLoss (
