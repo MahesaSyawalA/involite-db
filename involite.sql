@@ -414,9 +414,9 @@ INSERT INTO inComingItems (itemsId, businessId, userId, quantity, unitPrice, inC
 (9, 3, 1, 35, 4000,  '2025-01-03 14:00:00'),
 (10,3, 2, 14, 20000, '2025-01-03 15:00:00'),
 
-(1, 1, 3, 18, 8000,  '2025-01-04 09:00:00'),
-(2, 1, 4, 22, 12000, '2025-01-04 10:00:00'),
-(3, 1, 5, 26, 5000,  '2025-01-05 11:00:00'),
+(1, 1, 3, 18, 8000,  '2025-01-01 09:00:00'),
+(2, 1, 4, 22, 12000, '2025-01-01 10:00:00'),
+(3, 1, 5, 26, 5000,  '2025-01-01 11:00:00'),
 (4, 2, 1, 14, 9000,  '2025-01-05 13:00:00'),
 (5, 2, 2, 24, 6000,  '2025-01-06 09:00:00'),
 (6, 2, 3, 10, 15000, '2025-01-06 10:30:00'),
@@ -516,3 +516,14 @@ INSERT INTO outComingItems (itemsId, businessId, userId, quantity, unitPrice, ou
 (8, 2, 5, 1, 30000, '2025-01-19 11:00:00'),
 (9, 3, 1, 4, 5000,  '2025-01-20 12:00:00'),
 (10,3, 2, 2, 25000, '2025-01-20 14:00:00');
+
+CREATE TABLE dailyProfitoss (
+    dailyId INT AUTO_INCREMENT PRIMARY KEY,
+    businessId INT NOT NULL,
+    summaryDate DATE NOT NULL,
+    dailyRevenue DECIMAL(15,2) DEFAULT 0,
+    dailyCOGS DECIMAL(15,2) DEFAULT 0,
+    dailyGrossProfit DECIMAL(15,2) DEFAULT 0,
+    UNIQUE KEY (businessId, summaryDate),
+    FOREIGN KEY (businessId) REFERENCES business(businessId)
+);
