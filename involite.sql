@@ -228,7 +228,7 @@ CREATE TABLE inventaries (
     businessId INT NOT NULL,
     name VARCHAR(150) NOT NULL,
     description VARCHAR(200) NOT NULL,
-    price INT NOT NULL, 
+    price DECIMAL(15,2) DEFAULT 0, 
     purchaseDate DATE NOT NULL,
     status ENUM('active','inactive') NOT NULL DEFAULT 'active',
 
@@ -290,8 +290,8 @@ CREATE TABLE items (
     businessId INT NOT NULL, 
     itemName VARCHAR(150) NOT NULL, 
     category VARCHAR(100) NOT NULL, 
-    purchasePrice DECIMAL(12,2) NOT NULL, 
-    sellingPrice DECIMAL(12,2) NOT NULL, 
+    purchasePrice DECIMAL(12,2) DEFAULT 0, 
+    sellingPrice DECIMAL(12,2) DEFAULT 0, 
     stockQuantity INT NOT NULL, 
     movingStatus ENUM('FAST','SLOW','DEAD') NOT NULL,
 
@@ -364,9 +364,9 @@ CREATE TABLE inComingItems (
     userId INT NOT NULL,
 
     quantity INT NOT NULL,
-    unitPrice INT NOT NULL,
+    unitPrice DECIMAL(15,2) DEFAULT 0,
 
-    totalPurchase INT GENERATED ALWAYS AS (quantity * unitPrice) STORED,
+    totalPurchase DECIMAL(15,2) GENERATED ALWAYS AS (quantity * unitPrice) STORED,
 
     inComingDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -445,9 +445,9 @@ CREATE TABLE outComingItems (
     userId INT NOT NULL,
 
     quantity INT NOT NULL,
-    unitPrice INT NOT NULL,
+    unitPrice DECIMAL(15,2) DEFAULT 0,
 
-    totalSale INT GENERATED ALWAYS AS (quantity * unitPrice) STORED,
+    totalSale DECIMAL(15,2) GENERATED ALWAYS AS (quantity * unitPrice) STORED,
 
     outComingDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
