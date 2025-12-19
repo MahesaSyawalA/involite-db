@@ -1,6 +1,6 @@
 CREATE TABLE Reports(
     reportID INT PRIMARY KEY AUTO_INCREMENT,
-    reportType ENUM('Violence', 'Harassment', 'Corruption', 'Other', 'Hate Speech', 'Fraud') NOT NULL,
+    reportType VARCHAR(20) NOT NULL,
     user VARCHAR(50) NOT NULL,
     reportDescription TEXT NOT NULL
 );
