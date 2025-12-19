@@ -17,21 +17,20 @@ CREATE TABLE inComingItems (
         FOREIGN KEY (itemsId)
         REFERENCES items(itemsId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_ici_business
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_ici_user
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
-
 DELIMITER $$ 
 
 -- Trigger: trg_inComingItems_after_update

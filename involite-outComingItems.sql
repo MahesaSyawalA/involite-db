@@ -17,19 +17,19 @@ CREATE TABLE outComingItems (
         FOREIGN KEY (itemsId)
         REFERENCES items(itemsId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_oci_business
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_oci_user
         FOREIGN KEY (userId)
         REFERENCES users(userId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 DELIMITER $$ 

@@ -11,7 +11,7 @@ CREATE TABLE users (
         FOREIGN KEY (businessId)
         REFERENCES business(businessId)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 DELIMITER $$
