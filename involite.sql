@@ -1243,4 +1243,13 @@ CREATE TABLE logs (
         ON DELETE RESTRICT
 );
 
+CREATE TABLE employeePresence (
+    presenceID INT PRIMARY KEY AUTO_INCREMENT,
+    userID INT NOT NULL,
+    presenceDate DATE NOT NULL,
+    clockIN TIME NOT NULL,
+    clockOUT TIME,
 
+    UNIQUE (userID, presenceDate),
+    CHECK (clockOUT IS NULL OR clockOUT > clockIN)
+);
