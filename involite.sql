@@ -1,5 +1,7 @@
 -- create new database
-CREATE DATABASE db_involite;
+CREATE DATABASE IF NOT EXISTS involite_db;
+USE involite_db;
+
 
 -- CREATE ALL TABLE 
 -- create table business
