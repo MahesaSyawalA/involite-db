@@ -1,61 +1,76 @@
 CREATE TABLE Reports(
-    reportID INT PRIMARY KEY AUTO_INCREMENT,
+    reportId INT PRIMARY KEY AUTO_INCREMENT,
     reportType VARCHAR(20) NOT NULL,
-    user VARCHAR(50) NOT NULL,
-    reportDescription TEXT NOT NULL
+    userId INT NOT NULL,
+    description TEXT NOT NULL,
+    businessId INT,
+    createdAt DATE DEFAULT CURRENT_DATE
 );
 
 
+-- Default Date
+INSERT INTO Reports (reportType, userId, description, businessId) VALUES
+('Fraud', 1, 'Dugaan manipulasi laporan keuangan', 1),
+('Harassment', 2, 'Pelecehan verbal oleh karyawan', 1),
+('Corruption', 3, 'Indikasi korupsi pembelian barang', 2),
+('Violence', 4, 'Ancaman kekerasan di kantor', 2),
+('Other', 5, 'Pelanggaran SOP internal', 3),
 
-INSERT INTO Reports (reportType, user, reportDescription) VALUES
-('Fraud', 'Andi Kuliner', 'Penipuan pembayaran pesanan katering'),
-('Harassment', 'Budi Coffee', 'Pelanggan mengirim pesan kasar kepada kasir'),
-('Other', 'Citra Fashion', 'Keluhan layanan pengiriman terlambat'),
-('Violence', 'Dewi Laundry', 'Ancaman fisik terhadap pegawai toko'),
-('Corruption', 'Eko Supplier', 'Pemotongan dana kerja sama tidak resmi'),
+('Fraud', 6, 'Transaksi fiktif', 1),
+('Harassment', 7, 'Perilaku tidak sopan', 2),
+('Other', 8, 'Kesalahan stok', 3),
+('Violence', 9, 'Perkelahian antar karyawan', 1),
+('Corruption', 10, 'Suap vendor', 2),
 
-('Fraud', 'Fajar Elektronik', 'Pembayaran palsu menggunakan bukti transfer editan'),
-('Hate Speech', 'Gita Bakery', 'Komentar menghina usaha lokal di media sosial'),
-('Harassment', 'Hadi Workshop', 'Pelanggan melakukan pelecehan verbal'),
-('Other', 'Intan Florist', 'Perselisihan kecil antar mitra usaha'),
-('Violence', 'Joko Mart', 'Perusakan etalase toko'),
+('Fraud', 11, 'Penyalahgunaan dana', 3),
+('Harassment', 12, 'Intimidasi atasan', 1),
+('Other', 13, 'Kesalahan input data', 2),
+('Violence', 14, 'Ancaman fisik', 3),
+('Corruption', 15, 'Penggelapan dana', 1),
 
-('Corruption', 'Kartika Event', 'Permintaan pungutan liar dalam perizinan'),
-('Fraud', 'Lukman Printing', 'Penipuan invoice oleh pihak ketiga'),
-('Harassment', 'Maya Salon', 'Pelanggan mengganggu karyawan'),
-('Hate Speech', 'Nanda Media', 'Ujaran kebencian terhadap pemilik UMKM'),
-('Other', 'Oki Frozen Food', 'Kesalahpahaman kontrak kerja'),
+('Fraud', 16, 'Laporan penjualan tidak valid', 2),
+('Harassment', 17, 'Diskriminasi kerja', 3),
+('Other', 18, 'Dokumen laporan hilang', 1),
+('Violence', 19, 'Tindakan agresif', 2),
+('Corruption', 20, 'Penyalahgunaan aset', 3),
 
-('Violence', 'Putri Petshop', 'Ancaman terhadap pegawai saat penagihan'),
-('Fraud', 'Qori Skincare', 'Penjualan produk palsu mengatasnamakan toko'),
-('Corruption', 'Rama Logistik', 'Suap untuk percepatan distribusi'),
-('Harassment', 'Sinta Craft', 'Pelecehan melalui pesan online'),
-('Other', 'Taufik Furniture', 'Komplain kualitas bahan'),
+('Fraud', 21, 'Pemalsuan transaksi', 1),
+('Harassment', 22, 'Komentar tidak pantas', 2),
+('Other', 23, 'Error sistem laporan', 3),
+('Violence', 24, 'Ancaman verbal', 1),
+('Corruption', 25, 'Kolusi vendor', 2);
 
-('Hate Speech', 'Umar Travel', 'Komentar diskriminatif terhadap jasa lokal'),
-('Violence', 'Vina Catering', 'Keributan fisik dengan pelanggan'),
-('Fraud', 'Wahyu Digital', 'Penipuan layanan pemasaran online'),
-('Corruption', 'Yoga Distributor', 'Penggelapan dana titipan'),
-('Harassment', 'Zahra Boutique', 'Pelanggan berkata tidak sopan'),
 
-('Other', 'Andi Percetakan', 'Laporan umum terkait kerja sama'),
-('Fraud', 'Bella Aksesoris', 'Pembatalan sepihak setelah pembayaran'),
-('Violence', 'Chandra Bengkel', 'Perusakan fasilitas bengkel'),
-('Hate Speech', 'Dian Studio', 'Komentar merendahkan UMKM kecil'),
+-- Tanggal  yang ditentukan
+INSERT INTO Reports (reportType, userId, description, businessId, createdAt) VALUES
+('Fraud', 26, 'Manipulasi data penjualan', 3, '2024-07-01'),
+('Harassment', 27, 'Tekanan kerja berlebihan', 1, '2024-07-03'),
+('Other', 28, 'Laporan keuangan terlambat', 2, '2024-07-05'),
+('Violence', 29, 'Perilaku kasar di gudang', 3, '2024-07-08'),
+('Corruption', 30, 'Penyalahgunaan jabatan', 1, '2024-07-10'),
 
-('Harassment', 'Erik Fotografi', 'Pesan tidak pantas kepada admin'),
-('Fraud', 'Fitri Snack', 'Pembelian fiktif dalam jumlah besar'),
-('Corruption', 'Galih Property', 'Pungutan ilegal dalam sewa kios'),
-('Other', 'Hana Hijab', 'Kesalahan pencatatan stok'),
+('Fraud', 31, 'Pengeluaran fiktif', 2, '2024-08-01'),
+('Harassment', 32, 'Ucapan merendahkan', 3, '2024-08-03'),
+('Other', 33, 'Kesalahan inventaris', 1, '2024-08-05'),
+('Violence', 34, 'Perusakan fasilitas', 2, '2024-08-07'),
+('Corruption', 35, 'Transaksi ilegal vendor', 3, '2024-08-09'),
 
-('Violence', 'Irfan Seafood', 'Ancaman kekerasan saat penagihan'),
-('Harassment', 'Jihan Wedding', 'Gangguan verbal kepada staf'),
-('Fraud', 'Kevin Fashion', 'Penipuan reseller'),
-('Corruption', 'Lia Logistics', 'Penyalahgunaan dana operasional'),
-('Other', 'Miko Furniture', 'Keluhan kualitas pengiriman'),
+('Fraud', 36, 'Duplikasi laporan', 1, '2024-09-01'),
+('Harassment', 37, 'Pelecehan via pesan', 2, '2024-09-02'),
+('Other', 38, 'Laporan tidak lengkap', 3, '2024-09-03'),
+('Violence', 39, 'Ancaman ke manajemen', 1, '2024-09-04'),
+('Corruption', 40, 'Mark-up harga', 2, '2024-09-05'),
 
-('Hate Speech', 'Nisa Online Shop', 'Komentar ofensif di marketplace'),
-('Violence', 'Oscar Mini Market', 'Perkelahian di area toko'),
-('Harassment', 'Putra Tech Store', 'Pelanggan berkata kasar'),
-('Fraud', 'Rani Cosmetic', 'Penjualan produk tiruan'),
-('Other', 'Satria UMKM Center', 'Laporan umum terkait manajemen');
+('Fraud', 41, 'Rekayasa laba rugi', 3, '2024-10-01'),
+('Harassment', 42, 'Lingkungan kerja toksik', 1, '2024-10-02'),
+('Other', 43, 'Kesalahan arsip', 2, '2024-10-03'),
+('Violence', 44, 'Pertengkaran fisik', 3, '2024-10-04'),
+('Corruption', 45, 'Pemotongan dana ilegal', 1, '2024-10-05'),
+
+('Fraud', 46, 'Pendapatan tidak sesuai', 2, '2024-11-01'),
+('Harassment', 47, 'Ancaman psikologis', 3, '2024-11-02'),
+('Other', 48, 'Data laporan rusak', 1, '2024-11-03'),
+('Violence', 49, 'Intimidasi kerja', 2, '2024-11-04'),
+('Corruption', 50, 'Penyalahgunaan dana proyek', 3, '2024-11-05');
+
+
