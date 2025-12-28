@@ -1280,6 +1280,15 @@ CREATE TABLE employeePresence (
     CHECK (clockOUT IS NULL OR clockOUT > clockIN)
 );
 
+CREATE TABLE Reports(
+    reportId INT PRIMARY KEY AUTO_INCREMENT,
+    reportType VARCHAR(20) NOT NULL,
+    userId VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    businessId INT,
+    createdAt DATE DEFAULT CURRENT_DATE
+);
+
 DELIMITER $$
 
 CREATE FUNCTION fn_total_stock(p_businessId INT)
@@ -1443,15 +1452,6 @@ BEGIN
     END IF;
 END//
 
-CREATE TABLE Reports(
-    reportId INT PRIMARY KEY AUTO_INCREMENT,
-    reportType VARCHAR(20) NOT NULL,
-    userId VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL,
-    businessId INT,
-    createdAt DATE DEFAULT CURRENT_DATE
-);
-
 CREATE TRIGGER validate_report_type
 BEFORE INSERT ON Reports
 FOR EACH ROW
@@ -1462,8 +1462,6 @@ BEGIN
     END IF;
 END//  
 
-DELIMITER ;
-
 CREATE TRIGGER trg_reports_validate_date
 BEFORE INSERT ON Reports
 FOR EACH ROW
@@ -1472,8 +1470,9 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Tanggal laporan tidak boleh melebihi hari ini';
     END IF;
-END;
+END//
 
+DELIMITER ;
  
 -- business 
 INSERT INTO business (businessName, ownerName, businessType, address, phoneNumber) VALUES
