@@ -31,8 +31,10 @@ COMMIT;
 START TRANSACTION;
 
 UPDATE employeePresence
-WHERE userID = 3 AND presenceDATE = '2025-10-02'
-SET clockOUT = '10:00:00'
+SET clockOUT = '08:00:00'
+WHERE userID = 1
+AND presenceDate = '2025-12-01';
+
 
 COMMIT;
 -- Dead End
