@@ -1397,6 +1397,64 @@ SELECT
     ) AS stock_rank
 FROM items;
 
+DELIMITER //
+
+CREATE FUNCTION isEmployeePresence(p_clockIN TIME, p_clockOUT TIME)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE status VARCHAR(50);
+
+    IF p_clockOUT IS NULL THEN
+        SET status = 'Karyawan Tersebut belum Pulang';
+    ELSEIF p_clockIN IS NULL THEN
+        SET status = 'Karyawan tersebut tidak hadir ';
+    ELSE 
+        SET status = 'Karyawan Tersebut sudah Pulang';
+    END IF;
+    RETURN status;
+END //
+
+CREATE PROCEDURE getEmployeeOfTheDay(IN targetDate DATE)
+BEGIN
+    SELECT
+        presenceDate,
+        userID,
+        clockIN
+    FROM (
+        SELECT 
+            presenceDate,
+            userID,
+            clockIN,
+            RANK() OVER (PARTITION BY presenceDate ORDER BY clockIN ASC) AS jam_masuk
+            FROM employeePresence
+            WHERE presenceDate = targetDate
+    ) AS rankedPresence
+    WHERE jam_masuk = 1;
+END//
+
+CREATE TRIGGER validate_clock
+BEFORE UPDATE ON employeePresence
+FOR EACH ROW
+BEGIN
+    IF NEW.clockOUT IS NOT NULL AND NEW.clockOUT <= NEW.clockIN THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Update gagal: jam clockOUT harus lebih dinantikan daripada jam clockIN.';
+    END IF;
+END//
+
+CREATE TRIGGER validate_report_type
+BEFORE INSERT ON Reports
+FOR EACH ROW
+BEGIN
+    IF NEW.reportType NOT IN ('Violence','Harassment','Corruption','Other','Hate Speech','Fraud') THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Update gagal: Tipe Laporan harus mencakup {Violence, Harassment, Corruption, Other, Hate Speech, Fraud}.';
+    END IF;
+END//  
+
+DELIMITER;
+ 
 -- business 
 INSERT INTO business (businessName, ownerName, businessType, address, phoneNumber) VALUES
 ('Toko Sembako Berkah Jaya', 'Ahmad Fauzi', 'Retail Sembako', 'Jl. Raya Pasar Minggu No. 12, Jakarta Selatan', '081234567890'),
