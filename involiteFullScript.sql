@@ -728,9 +728,13 @@ CREATE PROCEDURE InsertIncomingItem(
     IN p_unitPrice DECIMAL(15,2)
 )
 BEGIN
-    DECLARE v_currentPrice DECIMAL(15,2);
-    DECLARE v_newAvgPrice DECIMAL(15,2);
-    DECLARE v_currentStock INT;
+    DECLARE v_current_price DECIMAL(15,2);
+    DECLARE v_new_avg_price DECIMAL(15,2);
+    DECLARE v_current_stock INT;
+    DECLARE v_total_purchase DECIMAL(15,2);
+    DECLARE v_new_ici_id INT;
+    DECLARE v_moving_status VARCHAR(10);
+    
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -739,32 +743,56 @@ BEGIN
     
     START TRANSACTION;
     
-    -- 1. Ambil data current untuk kalkulasi rata-rata
+    -- Lock row dan ambil data current
     SELECT purchasePrice, stockQuantity 
-    INTO v_currentPrice, v_currentStock
+    INTO v_current_price, v_current_stock
     FROM items 
-    WHERE itemsId = p_itemsId AND businessId = p_businessId;
+    WHERE itemsId = p_itemsId 
+      AND businessId = p_businessId
+    FOR UPDATE;
     
-    IF v_currentPrice IS NULL THEN
+    IF v_current_price IS NULL THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Item tidak ditemukan';
     END IF;
     
-    -- 2. Hitung harga rata-rata baru (weighted average)
-    SET v_newAvgPrice = CASE 
-        WHEN v_currentStock + p_quantity > 0 THEN
-            ((v_currentPrice * v_currentStock) + (p_unitPrice * p_quantity)) 
-            / (v_currentStock + p_quantity)
-        ELSE p_unitPrice
+    -- Validasi input
+    IF p_quantity <= 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Quantity harus lebih dari 0';
+    END IF;
+    
+    IF p_unitPrice < 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Harga unit tidak boleh negatif';
+    END IF;
+    
+    -- Hitung total purchase
+    SET v_total_purchase = p_quantity * p_unitPrice;
+    
+    -- Hitung harga rata-rata baru (weighted average)
+    IF v_current_stock + p_quantity > 0 THEN
+        SET v_new_avg_price = ((v_current_price * v_current_stock) + (p_unitPrice * p_quantity)) 
+                               / (v_current_stock + p_quantity);
+    ELSE
+        SET v_new_avg_price = p_unitPrice;
+    END IF;
+    
+    -- Tentukan moving status baru
+    SET v_moving_status = CASE
+        WHEN (v_current_stock + p_quantity) > 100 THEN 'FAST'
+        WHEN (v_current_stock + p_quantity) BETWEEN 20 AND 100 THEN 'SLOW'
+        ELSE 'DEAD'
     END;
     
-    -- 3. Insert ke inComingItems (trigger akan update stok)
+    -- Insert ke inComingItems
     INSERT INTO inComingItems (
         itemsId,
         businessId,
         userId,
         quantity,
         unitPrice,
+        totalPurchase,
         inComingDate
     ) VALUES (
         p_itemsId,
@@ -772,24 +800,52 @@ BEGIN
         p_userId,
         p_quantity,
         p_unitPrice,
+        v_total_purchase,
         NOW()
     );
     
-    -- 4. Update harga beli rata-rata (INI SATU-SATUNYA UPDATE di prosedur)
+    SET v_new_ici_id = LAST_INSERT_ID();
+    
+    -- Update items: stok, harga beli rata-rata, dan moving status
     UPDATE items 
-    SET purchasePrice = ROUND(v_newAvgPrice, 2)
+    SET 
+        stockQuantity = stockQuantity + p_quantity,
+        purchasePrice = ROUND(v_new_avg_price, 2),
+        movingStatus = v_moving_status
     WHERE itemsId = p_itemsId;
+    
+    -- Update dailyProfitLoss dalam satu transaksi
+    INSERT INTO dailyProfitLoss (
+        businessId,
+        summaryDate,
+        dailyRevenue,
+        dailyCOGS,
+        dailyGrossProfit
+    ) VALUES (
+        p_businessId,
+        CURDATE(),
+        0,
+        v_total_purchase,
+        -v_total_purchase
+    )
+    ON DUPLICATE KEY UPDATE
+        dailyCOGS = dailyCOGS + v_total_purchase,
+        dailyGrossProfit = dailyRevenue - dailyCOGS;
     
     COMMIT;
     
+    -- Return hasil
     SELECT 
-        'SUCCESS' as status,
-        'Barang masuk berhasil dengan update harga rata-rata' as message,
-        LAST_INSERT_ID() as incoming_id,
-        FormatRupiah(v_currentPrice) as old_price,
-        FormatRupiah(v_newAvgPrice) as new_avg_price,
-        FormatRupiah(p_unitPrice) as input_price;
-    
+        'SUCCESS' AS status,
+        'Barang masuk berhasil' AS message,
+        v_new_ici_id AS incoming_id,
+        v_current_stock AS stock_before,
+        (v_current_stock + p_quantity) AS stock_after,
+        FORMAT(v_current_price, 2) AS old_price,
+        FORMAT(v_new_avg_price, 2) AS new_avg_price,
+        FORMAT(p_unitPrice, 2) AS input_price,
+        v_moving_status AS moving_status,
+        FormatRupiah(v_total_purchase) AS total_purchase;
 END $$
 
 DELIMITER ;
