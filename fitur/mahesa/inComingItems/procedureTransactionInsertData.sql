@@ -42,13 +42,15 @@ BEGIN
         businessId,
         userId,
         quantity,
-        unitPrice
+        unitPrice,
+        inComingDate
     ) VALUES (
         p_itemsId,
         p_businessId,
         p_userId,
         p_quantity,
-        p_unitPrice
+        p_unitPrice,
+        NOW()
     );
     
     -- 4. Update harga beli rata-rata (INI SATU-SATUNYA UPDATE di prosedur)

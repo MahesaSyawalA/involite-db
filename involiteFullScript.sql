@@ -458,7 +458,7 @@ BEGIN
             'movingStatus', JSON_OBJECT('old', OLD.movingStatus, 'new', NEW.movingStatus)
         )
     );
-END$$
+END $$
 
 CREATE TRIGGER trg_items_before_delete
 BEFORE DELETE ON items
@@ -484,7 +484,7 @@ BEGIN
             'movingStatus', OLD.movingStatus
         )
     );
-END$$
+END $$
 
 DELIMITER ;
 
@@ -728,13 +728,9 @@ CREATE PROCEDURE InsertIncomingItem(
     IN p_unitPrice DECIMAL(15,2)
 )
 BEGIN
-    DECLARE v_current_price DECIMAL(15,2);
-    DECLARE v_new_avg_price DECIMAL(15,2);
-    DECLARE v_current_stock INT;
-    DECLARE v_total_purchase DECIMAL(15,2);
-    DECLARE v_new_ici_id INT;
-    DECLARE v_moving_status VARCHAR(10);
-    
+    DECLARE v_currentPrice DECIMAL(15,2);
+    DECLARE v_newAvgPrice DECIMAL(15,2);
+    DECLARE v_currentStock INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -743,56 +739,32 @@ BEGIN
     
     START TRANSACTION;
     
-    -- Lock row dan ambil data current
+    -- 1. Ambil data current untuk kalkulasi rata-rata
     SELECT purchasePrice, stockQuantity 
-    INTO v_current_price, v_current_stock
+    INTO v_currentPrice, v_currentStock
     FROM items 
-    WHERE itemsId = p_itemsId 
-      AND businessId = p_businessId
-    FOR UPDATE;
+    WHERE itemsId = p_itemsId AND businessId = p_businessId;
     
-    IF v_current_price IS NULL THEN
+    IF v_currentPrice IS NULL THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Item tidak ditemukan';
     END IF;
     
-    -- Validasi input
-    IF p_quantity <= 0 THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'Quantity harus lebih dari 0';
-    END IF;
-    
-    IF p_unitPrice < 0 THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'Harga unit tidak boleh negatif';
-    END IF;
-    
-    -- Hitung total purchase
-    SET v_total_purchase = p_quantity * p_unitPrice;
-    
-    -- Hitung harga rata-rata baru (weighted average)
-    IF v_current_stock + p_quantity > 0 THEN
-        SET v_new_avg_price = ((v_current_price * v_current_stock) + (p_unitPrice * p_quantity)) 
-                               / (v_current_stock + p_quantity);
-    ELSE
-        SET v_new_avg_price = p_unitPrice;
-    END IF;
-    
-    -- Tentukan moving status baru
-    SET v_moving_status = CASE
-        WHEN (v_current_stock + p_quantity) > 100 THEN 'FAST'
-        WHEN (v_current_stock + p_quantity) BETWEEN 20 AND 100 THEN 'SLOW'
-        ELSE 'DEAD'
+    -- 2. Hitung harga rata-rata baru (weighted average)
+    SET v_newAvgPrice = CASE 
+        WHEN v_currentStock + p_quantity > 0 THEN
+            ((v_currentPrice * v_currentStock) + (p_unitPrice * p_quantity)) 
+            / (v_currentStock + p_quantity)
+        ELSE p_unitPrice
     END;
     
-    -- Insert ke inComingItems
+    -- 3. Insert ke inComingItems (trigger akan update stok)
     INSERT INTO inComingItems (
         itemsId,
         businessId,
         userId,
         quantity,
         unitPrice,
-        totalPurchase,
         inComingDate
     ) VALUES (
         p_itemsId,
@@ -800,53 +772,25 @@ BEGIN
         p_userId,
         p_quantity,
         p_unitPrice,
-        v_total_purchase,
         NOW()
     );
     
-    SET v_new_ici_id = LAST_INSERT_ID();
-    
-    -- Update items: stok, harga beli rata-rata, dan moving status
+    -- 4. Update harga beli rata-rata (INI SATU-SATUNYA UPDATE di prosedur)
     UPDATE items 
-    SET 
-        stockQuantity = stockQuantity + p_quantity,
-        purchasePrice = ROUND(v_new_avg_price, 2),
-        movingStatus = v_moving_status
+    SET purchasePrice = ROUND(v_newAvgPrice, 2)
     WHERE itemsId = p_itemsId;
-    
-    -- Update dailyProfitLoss dalam satu transaksi
-    INSERT INTO dailyProfitLoss (
-        businessId,
-        summaryDate,
-        dailyRevenue,
-        dailyCOGS,
-        dailyGrossProfit
-    ) VALUES (
-        p_businessId,
-        CURDATE(),
-        0,
-        v_total_purchase,
-        -v_total_purchase
-    )
-    ON DUPLICATE KEY UPDATE
-        dailyCOGS = dailyCOGS + v_total_purchase,
-        dailyGrossProfit = dailyRevenue - dailyCOGS;
     
     COMMIT;
     
-    -- Return hasil
     SELECT 
-        'SUCCESS' AS status,
-        'Barang masuk berhasil' AS message,
-        v_new_ici_id AS incoming_id,
-        v_current_stock AS stock_before,
-        (v_current_stock + p_quantity) AS stock_after,
-        FORMAT(v_current_price, 2) AS old_price,
-        FORMAT(v_new_avg_price, 2) AS new_avg_price,
-        FORMAT(p_unitPrice, 2) AS input_price,
-        v_moving_status AS moving_status,
-        FormatRupiah(v_total_purchase) AS total_purchase;
-END$$
+        'SUCCESS' as status,
+        'Barang masuk berhasil dengan update harga rata-rata' as message,
+        LAST_INSERT_ID() as incoming_id,
+        FormatRupiah(v_currentPrice) as old_price,
+        FormatRupiah(v_newAvgPrice) as new_avg_price,
+        FormatRupiah(p_unitPrice) as input_price;
+    
+END $$
 
 DELIMITER ;
 
@@ -1698,156 +1642,106 @@ INSERT INTO items (businessId, itemName, category, purchasePrice, sellingPrice, 
 (4, 'Stiker Vinyl', 'Produk', 3500, 7000, 0, 'DEAD');
 
 -- incoming items
-INSERT INTO inComingItems (itemsId, businessId, userId, quantity, unitPrice, inComingDate) VALUES
--- ITEM ID 1
-(1, 1, 3, 20, 65000, CURRENT_TIMESTAMP),
-(1, 1, 3, 15, 64000, CURRENT_TIMESTAMP),
-(1, 1, 3, 25, 65500, CURRENT_TIMESTAMP),
-(1, 1, 3, 10, 66000, CURRENT_TIMESTAMP),
+-- INSERT INTO inComingItems (itemsId, businessId, userId, quantity, unitPrice, inComingDate) VALUES
+-- (1, 1, 3, 50, 62000, CURRENT_TIMESTAMP),  -- Beli 62.000 (lebih murah dari purchasePrice 65.000)
+-- (1, 1, 3, 40, 61500, CURRENT_TIMESTAMP),  -- Beli lebih murah lagi
 
--- ITEM ID 2
-(2, 1, 3, 30, 13500, CURRENT_TIMESTAMP),
-(2, 1, 3, 25, 13800, CURRENT_TIMESTAMP),
-(2, 1, 3, 20, 14000, CURRENT_TIMESTAMP),
-(2, 1, 3, 15, 13700, CURRENT_TIMESTAMP),
+-- -- Item 2: Gula Pasir 1kg - Harga Grosir
+-- (2, 1, 3, 100, 12500, CURRENT_TIMESTAMP),  -- Beli 12.500 (lebih murah dari 13.500)
+-- (2, 1, 3, 2000, 12300, CURRENT_TIMESTAMP),  -- Harga makin turun
 
--- ITEM ID 3
-(3, 1, 3, 40, 14500, CURRENT_TIMESTAMP),
-(3, 1, 3, 30, 14800, CURRENT_TIMESTAMP),
-(3, 1, 3, 25, 15000, CURRENT_TIMESTAMP),
-(3, 1, 3, 20, 14700, CURRENT_TIMESTAMP),
+-- -- Item 3: Minyak Goreng 1L - Diskon Supplier
+-- (3, 1, 3, 120, 13800, CURRENT_TIMESTAMP),  -- Beli 13.800 (lebih murah dari 14.500)
+-- (3, 1, 3, 100, 13500, CURRENT_TIMESTAMP),  -- Harga lebih murah
 
--- ITEM ID 4
-(4, 1, 3, 35, 12000, CURRENT_TIMESTAMP),
-(4, 1, 3, 30, 12200, CURRENT_TIMESTAMP),
-(4, 1, 3, 25, 12500, CURRENT_TIMESTAMP),
-(4, 1, 3, 20, 12300, CURRENT_TIMESTAMP),
+-- -- Item 4: Tepung Terigu 1kg - Harga Promo
+-- (4, 1, 3, 150, 11500, CURRENT_TIMESTAMP),  -- Beli 11.500 (lebih murah dari 12.000)
 
--- ITEM ID 5
-(5, 1, 3, 100, 2500, CURRENT_TIMESTAMP),
-(5, 1, 3, 80, 2600, CURRENT_TIMESTAMP),
-(5, 1, 3, 120, 2550, CURRENT_TIMESTAMP),
-(5, 1, 3, 90, 2580, CURRENT_TIMESTAMP),
+-- -- Item 5: Mie Instan - Harga Grosir Besar
+-- (5, 1, 3, 200, 2300, CURRENT_TIMESTAMP),  -- Beli 2.300 (lebih murah dari 2.500)
+-- (5, 1, 3, 150, 2250, CURRENT_TIMESTAMP),  -- Harga makin murah
 
--- ITEM ID 6
-(6, 1, 3, 25, 9000, CURRENT_TIMESTAMP),
-(6, 1, 3, 20, 9200, CURRENT_TIMESTAMP),
-(6, 1, 3, 15, 9500, CURRENT_TIMESTAMP),
-(6, 1, 3, 10, 9400, CURRENT_TIMESTAMP),
+-- -- Item 6: Susu Kental Manis - Beli di Pabrik
+-- (6, 1, 3, 40, 8500, CURRENT_TIMESTAMP),  -- Beli 8.500 (lebih murah dari 9.000)
 
--- ITEM ID 7
-(7, 1, 3, 18, 18000, CURRENT_TIMESTAMP),
-(7, 1, 3, 15, 18500, CURRENT_TIMESTAMP),
-(7, 1, 3, 12, 19000, CURRENT_TIMESTAMP),
-(7, 1, 3, 10, 18800, CURRENT_TIMESTAMP),
+-- -- Item 7: Kopi Bubuk 200g - Supplier Langsung
+-- (7, 1, 3, 30, 16500, CURRENT_TIMESTAMP),  -- Beli 16.500 (lebih murah dari 18.000)
 
--- ITEM ID 8
-(8, 1, 3, 22, 7000, CURRENT_TIMESTAMP),
-(8, 1, 3, 20, 7200, CURRENT_TIMESTAMP),
-(8, 1, 3, 18, 7400, CURRENT_TIMESTAMP),
-(8, 1, 3, 15, 7300, CURRENT_TIMESTAMP),
+-- -- Item 8: Sabun Cuci - Harga Distributor
+-- (8, 1, 3, 60, 6500, CURRENT_TIMESTAMP),  -- Beli 6.500 (lebih murah dari 7.000)
 
--- ITEM ID 9
-(9, 1, 3, 12, 12000, CURRENT_TIMESTAMP),
-(9, 1, 3, 10, 12500, CURRENT_TIMESTAMP),
-(9, 1, 3, 8, 13000, CURRENT_TIMESTAMP),
-(9, 1, 3, 6, 12800, CURRENT_TIMESTAMP),
+-- -- Item 9: Baterai AA - Beli Pasif (untuk perbandingan)
+-- (9, 1, 3, 20, 11800, CURRENT_TIMESTAMP),  -- Beli normal
 
--- ITEM ID 10
-(10, 1, 3, 50, 2000, CURRENT_TIMESTAMP),
-(10, 1, 3, 45, 2100, CURRENT_TIMESTAMP),
-(10, 1, 3, 40, 2200, CURRENT_TIMESTAMP),
-(10, 1, 3, 35, 2150, CURRENT_TIMESTAMP),
+-- -- Item 10: Korek Api - Harga Sangat Murah
+-- (10, 1, 3, 200, 1800, CURRENT_TIMESTAMP),
 
-(11, 2, 7, 50, 44000, CURRENT_TIMESTAMP),
-(12, 2, 7, 50, 37000, CURRENT_TIMESTAMP),
-(13, 2, 7, 40, 17500, CURRENT_TIMESTAMP),
+-- (11, 2, 7, 50, 44000, CURRENT_TIMESTAMP),
+-- (12, 2, 7, 50, 37000, CURRENT_TIMESTAMP),
+-- (13, 2, 7, 40, 17500, CURRENT_TIMESTAMP),
 
-(14, 2, 7, 30, 11500, CURRENT_TIMESTAMP),
-(18, 2, 7, 20, 64000, CURRENT_TIMESTAMP),
-(19, 2, 7, 15, 64000, CURRENT_TIMESTAMP),
+-- (14, 2, 7, 30, 11500, CURRENT_TIMESTAMP),
+-- (18, 2, 7, 20, 64000, CURRENT_TIMESTAMP),
+-- (19, 2, 7, 15, 64000, CURRENT_TIMESTAMP),
 
-(15, 2, 7, 500, 750, CURRENT_TIMESTAMP),
-(16, 2, 7, 400, 850, CURRENT_TIMESTAMP),
-(17, 2, 7, 600, 480, CURRENT_TIMESTAMP),
+-- (15, 2, 7, 500, 750, CURRENT_TIMESTAMP),
+-- (16, 2, 7, 400, 850, CURRENT_TIMESTAMP),
+-- (17, 2, 7, 600, 480, CURRENT_TIMESTAMP),
 
-(20, 2, 7, 10, 70000, CURRENT_TIMESTAMP);
+-- (20, 2, 7, 10, 70000, CURRENT_TIMESTAMP);
 
 -- data dummy outComing Items
-INSERT INTO outComingItems (itemsId, businessId, userId, quantity, unitPrice, outComingDate) VALUES
--- ITEM ID 1
-(1, 1, 4, 5, 75000, CURRENT_TIMESTAMP),
-(1, 1, 4, 8, 75000, CURRENT_TIMESTAMP),
-(1, 1, 4, 6, 76000, CURRENT_TIMESTAMP),
-(1, 1, 4, 4, 75000, CURRENT_TIMESTAMP),
+-- INSERT INTO outComingItems (itemsId, businessId, userId, quantity, unitPrice, outComingDate) VALUES
+-- (1, 1, 4, 25, 78000, CURRENT_TIMESTAMP),  -- Jual 78.000 (lebih tinggi dari sellingPrice 75.000)
+-- (1, 1, 4, 30, 78500, CURRENT_TIMESTAMP),  -- Harga naik lagi
 
--- ITEM ID 2
-(2, 1, 4, 10, 15500, CURRENT_TIMESTAMP),
-(2, 1, 4, 12, 15500, CURRENT_TIMESTAMP),
-(2, 1, 4, 8, 16000, CURRENT_TIMESTAMP),
-(2, 1, 4, 6, 15500, CURRENT_TIMESTAMP),
+-- -- Item 2: Gula Pasir 1kg - Jual dengan Margin Tinggi
+-- (2, 1, 4, 60, 16500, CURRENT_TIMESTAMP),  -- Jual 16.500 (lebih tinggi dari 15.500)
+-- (2, 1, 4, 50, 16800, CURRENT_TIMESTAMP),  -- Harga naik terus
 
--- ITEM ID 3
-(3, 1, 4, 15, 16500, CURRENT_TIMESTAMP),
-(3, 1, 4, 12, 16500, CURRENT_TIMESTAMP),
-(3, 1, 4, 10, 17000, CURRENT_TIMESTAMP),
-(3, 1, 4, 8, 16500, CURRENT_TIMESTAMP),
+-- -- Item 3: Minyak Goreng 1L - Harga Premium
+-- (3, 1, 4, 80, 17500, CURRENT_TIMESTAMP),  -- Jual 17.500 (lebih tinggi dari 16.500)
+-- (3, 1, 4, 40, 17800, CURRENT_TIMESTAMP),  -- Harga naik karena permintaan
 
--- ITEM ID 4
-(4, 1, 4, 12, 14000, CURRENT_TIMESTAMP),
-(4, 1, 4, 10, 14000, CURRENT_TIMESTAMP),
-(4, 1, 4, 8, 14500, CURRENT_TIMESTAMP),
-(4, 1, 4, 6, 14000, CURRENT_TIMESTAMP),
+-- -- Item 4: Tepung Terigu 1kg - Jual dengan Profit
+-- (4, 1, 4, 75, 14500, CURRENT_TIMESTAMP),  -- Jual 14.500 (lebih tinggi dari 14.000)
+-- (4, 1, 4, 60, 14800, CURRENT_TIMESTAMP),  -- Margin makin besar
 
--- ITEM ID 5
-(5, 1, 4, 40, 3500, CURRENT_TIMESTAMP),
-(5, 1, 4, 35, 3500, CURRENT_TIMESTAMP),
-(5, 1, 4, 50, 3600, CURRENT_TIMESTAMP),
-(5, 1, 4, 30, 3500, CURRENT_TIMESTAMP),
+-- -- Item 5: Mie Instan - Markup Besar
+-- (5, 1, 4, 120, 3800, CURRENT_TIMESTAMP),  -- Jual 3.800 (lebih tinggi dari 3.500)
+-- (5, 1, 4, 100, 3900, CURRENT_TIMESTAMP),  -- Harga jual meningkat
 
--- ITEM ID 6
-(6, 1, 4, 6, 11000, CURRENT_TIMESTAMP),
-(6, 1, 4, 8, 11000, CURRENT_TIMESTAMP),
-(6, 1, 4, 5, 11500, CURRENT_TIMESTAMP),
-(6, 1, 4, 4, 11000, CURRENT_TIMESTAMP),
+-- -- Item 6: Susu Kental Manis - Jual dengan Profit Bagus
+-- (6, 1, 4, 20, 12500, CURRENT_TIMESTAMP),  -- Jual 12.500 (lebih tinggi dari 11.000)
+-- (6, 1, 4, 15, 12800, CURRENT_TIMESTAMP),  -- Profit meningkat
 
--- ITEM ID 7
-(7, 1, 4, 5, 22000, CURRENT_TIMESTAMP),
-(7, 1, 4, 6, 22000, CURRENT_TIMESTAMP),
-(7, 1, 4, 4, 22500, CURRENT_TIMESTAMP),
-(7, 1, 4, 3, 22000, CURRENT_TIMESTAMP),
+-- -- Item 7: Kopi Bubuk 200g - Harga Premium
+-- (7, 1, 4, 15, 24000, CURRENT_TIMESTAMP),  -- Jual 24.000 (lebih tinggi dari 22.000)
+-- (7, 1, 4, 10, 24500, CURRENT_TIMESTAMP),  -- Brand premium
 
--- ITEM ID 8
-(8, 1, 4, 10, 9000, CURRENT_TIMESTAMP),
-(8, 1, 4, 12, 9000, CURRENT_TIMESTAMP),
-(8, 1, 4, 8, 9500, CURRENT_TIMESTAMP),
-(8, 1, 4, 6, 9000, CURRENT_TIMESTAMP),
+-- -- Item 8: Sabun Cuci - Jual dengan Margin Tinggi
+-- (8, 1, 4, 30, 9500, CURRENT_TIMESTAMP),  -- Jual 9.500 (lebih tinggi dari 9.000)
+-- (8, 1, 4, 25, 9800, CURRENT_TIMESTAMP),  -- Harga naik
 
--- ITEM ID 9
-(9, 1, 4, 3, 15000, CURRENT_TIMESTAMP),
-(9, 1, 4, 4, 15000, CURRENT_TIMESTAMP),
-(9, 1, 4, 2, 15500, CURRENT_TIMESTAMP),
-(9, 1, 4, 1, 15000, CURRENT_TIMESTAMP),
+-- -- Item 9: Baterai AA - Jual Normal (sedikit profit)
+-- (9, 1, 4, 10, 15200, CURRENT_TIMESTAMP),  -- Jual 15.200 (sedikit di atas 15.000)
 
--- ITEM ID 10
-(10, 1, 4, 20, 3000, CURRENT_TIMESTAMP),
-(10, 1, 4, 18, 3000, CURRENT_TIMESTAMP),
-(10, 1, 4, 15, 3200, CURRENT_TIMESTAMP),
-(10, 1, 4, 12, 3000, CURRENT_TIMESTAMP),
+-- -- Item 10: Korek Api - Volume Besar, Profit Kecil
+-- (10, 1, 4, 150, 3500, CURRENT_TIMESTAMP),
 
-(11, 2, 8, 30, 67000, CURRENT_TIMESTAMP),
-(12, 2, 8, 35, 56000, CURRENT_TIMESTAMP),
-(13, 2, 8, 25, 26000, CURRENT_TIMESTAMP),
+-- (11, 2, 8, 30, 67000, CURRENT_TIMESTAMP),
+-- (12, 2, 8, 35, 56000, CURRENT_TIMESTAMP),
+-- (13, 2, 8, 25, 26000, CURRENT_TIMESTAMP),
 
-(15, 2, 8, 300, 1600, CURRENT_TIMESTAMP),
-(16, 2, 8, 250, 1800, CURRENT_TIMESTAMP),
-(17, 2, 8, 400, 1100, CURRENT_TIMESTAMP),
+-- (15, 2, 8, 300, 1600, CURRENT_TIMESTAMP),
+-- (16, 2, 8, 250, 1800, CURRENT_TIMESTAMP),
+-- (17, 2, 8, 400, 1100, CURRENT_TIMESTAMP),
 
-(14, 2, 8, 10, 19000, CURRENT_TIMESTAMP),
-(18, 2, 8, 8, 88000, CURRENT_TIMESTAMP),
-(19, 2, 8, 6, 88000, CURRENT_TIMESTAMP),
+-- (14, 2, 8, 10, 19000, CURRENT_TIMESTAMP),
+-- (18, 2, 8, 8, 88000, CURRENT_TIMESTAMP),
+-- (19, 2, 8, 6, 88000, CURRENT_TIMESTAMP),
 
-(20, 2, 8, 5, 98000, CURRENT_TIMESTAMP);
+-- (20, 2, 8, 5, 98000, CURRENT_TIMESTAMP);
 
 
 INSERT INTO employeePresence (userID, presenceDate, clockIN, clockOUT) VALUES
@@ -1953,3 +1847,86 @@ INSERT INTO Reports (reportType, userId, description, businessId, createdAt) VAL
 ('Other', 48, 'Data laporan rusak', 1, '2024-11-03'),
 ('Violence', 49, 'Intimidasi kerja', 2, '2024-11-04'),
 ('Corruption', 50, 'Penyalahgunaan dana proyek', 3, '2024-11-05');
+
+-- insert incoming
+
+CALL InsertIncomingItem(1, 1, 3, 50, 62000);
+CALL InsertIncomingItem(1, 1, 3, 40, 61500);
+
+CALL InsertIncomingItem(2, 1, 3, 100, 12500);
+CALL InsertIncomingItem(2, 1, 3, 2000, 12300);
+
+CALL InsertIncomingItem(3, 1, 3, 120, 13800);
+CALL InsertIncomingItem(3, 1, 3, 100, 13500);
+
+CALL InsertIncomingItem(4, 1, 3, 150, 11500);
+
+CALL InsertIncomingItem(5, 1, 3, 200, 2300);
+CALL InsertIncomingItem(5, 1, 3, 150, 2250);
+
+CALL InsertIncomingItem(6, 1, 3, 40, 8500);
+
+CALL InsertIncomingItem(7, 1, 3, 30, 16500);
+
+CALL InsertIncomingItem(8, 1, 3, 60, 6500);
+
+CALL InsertIncomingItem(9, 1, 3, 20, 11800);
+
+CALL InsertIncomingItem(10, 1, 3, 200, 1800);
+
+CALL InsertIncomingItem(11, 2, 7, 50, 44000);
+CALL InsertIncomingItem(12, 2, 7, 50, 37000);
+CALL InsertIncomingItem(13, 2, 7, 40, 17500);
+
+CALL InsertIncomingItem(14, 2, 7, 30, 11500);
+CALL InsertIncomingItem(18, 2, 7, 20, 64000);
+CALL InsertIncomingItem(19, 2, 7, 15, 64000);
+
+CALL InsertIncomingItem(15, 2, 7, 500, 750);
+CALL InsertIncomingItem(16, 2, 7, 400, 850);
+CALL InsertIncomingItem(17, 2, 7, 600, 480);
+
+CALL InsertIncomingItem(20, 2, 7, 10, 70000);
+
+-- insert outcoming 
+CALL InsertOutcomingItem(1, 1, 4, 25, 78000);
+CALL InsertOutcomingItem(1, 1, 4, 30, 78500);
+
+CALL InsertOutcomingItem(2, 1, 4, 60, 16500);
+CALL InsertOutcomingItem(2, 1, 4, 50, 16800);
+
+CALL InsertOutcomingItem(3, 1, 4, 80, 17500);
+CALL InsertOutcomingItem(3, 1, 4, 40, 17800);
+
+CALL InsertOutcomingItem(4, 1, 4, 75, 14500);
+CALL InsertOutcomingItem(4, 1, 4, 60, 14800);
+
+CALL InsertOutcomingItem(5, 1, 4, 120, 3800);
+CALL InsertOutcomingItem(5, 1, 4, 100, 3900);
+
+CALL InsertOutcomingItem(6, 1, 4, 20, 12500);
+CALL InsertOutcomingItem(6, 1, 4, 15, 12800);
+
+CALL InsertOutcomingItem(7, 1, 4, 15, 24000);
+CALL InsertOutcomingItem(7, 1, 4, 10, 24500);
+
+CALL InsertOutcomingItem(8, 1, 4, 30, 9500);
+CALL InsertOutcomingItem(8, 1, 4, 25, 9800);
+
+CALL InsertOutcomingItem(9, 1, 4, 10, 15200);
+
+CALL InsertOutcomingItem(10, 1, 4, 150, 3500);
+
+CALL InsertOutcomingItem(11, 2, 8, 30, 67000);
+CALL InsertOutcomingItem(12, 2, 8, 35, 56000);
+CALL InsertOutcomingItem(13, 2, 8, 25, 26000);
+
+CALL InsertOutcomingItem(15, 2, 8, 300, 1600);
+CALL InsertOutcomingItem(16, 2, 8, 250, 1800);
+CALL InsertOutcomingItem(17, 2, 8, 400, 1100);
+
+CALL InsertOutcomingItem(14, 2, 8, 10, 19000);
+CALL InsertOutcomingItem(18, 2, 8, 8, 88000);
+CALL InsertOutcomingItem(19, 2, 8, 6, 88000);
+
+CALL InsertOutcomingItem(20, 2, 8, 5, 98000);
